@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'model/Ususario.dart';
+import 'model/Destino.dart';
+import 'model/Usuario.dart';
+import 'telas/cadastrarDestino.dart';
+import 'telas/showDestino.dart';
 
 void main() => runApp(MeuApp());
 
@@ -14,7 +16,7 @@ class MeuApp extends StatelessWidget {
       ),
       home: TelaLogin(),
     );
-   }
+  }
 }
 
 class TelaLogin extends StatefulWidget {
@@ -76,20 +78,21 @@ class TelaPrincipal extends StatefulWidget {
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
   List<String> _viagensReservadas = [];
-  List<Map<String, dynamic>> _viagens = [
+  List<Destino> destinos = [];
+  /*List<Map<String, dynamic>> _viagens = [
     {'destino': 'Paris', 'preço': 2000},
     {'destino': 'Tokyo', 'preço': 3000},
     {'destino': 'Japão', 'preço': 5000},
     {'destino': 'Brasil', 'preço': 3000},
     // Adicione mais viagens aqui
-  ];
+  ];*/
 
-  void _reservarViagem(Map<String, dynamic> viagem) {
-    int precoViagem = viagem['preço'];
+  void _reservarViagem(Destino viagem) {
+    double precoViagem = viagem.preco;
     if (widget.usuario.saldo >= precoViagem) {
       setState(() {
         widget.usuario.saldo -= precoViagem;
-        _viagensReservadas.add(viagem['destino']);
+        _viagensReservadas.add(viagem.nome);
       });
     } else {
       showDialog(
@@ -188,6 +191,25 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               },
             ),
             ListTile(
+              title: Text('Cadastrar Destino'),
+              onTap: () {
+                //Navegar para a página CadastrarDestinoPage quando clicar em "Cadastrar Destino"
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        CadastrarDestinoPage(destinos: destinos),
+                  ),
+                ).then((novoDestino) {
+                  if (novoDestino != null) {
+                    setState(() {
+                      // destinos.add(novoDestino);
+                    });
+                  }
+                });
+              },
+            ),
+            ListTile(
               title: Text('Sair'),
               onTap: _sairDoPerfil,
             ),
@@ -195,13 +217,18 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         ),
       ),
       body: ListView.builder(
-        itemCount: _viagens.length,
+        itemCount: destinos.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text(_viagens[index]['destino']),
-            subtitle: Text('Preço: ${_viagens[index]['preço']}'),
+            title: Text('${destinos[index].nome} - ${destinos.length}'),
+            subtitle: Text('Preço: ${destinos[index].preco}'),
             onTap: () {
-              _reservarViagem(_viagens[index]);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ShowDestino(destino: destinos[index]),
+                ),
+              );
             },
           );
         },
