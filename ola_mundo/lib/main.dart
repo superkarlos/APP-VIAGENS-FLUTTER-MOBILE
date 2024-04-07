@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:main/screens/TelaCadastro.dart';
 import 'model/Destino.dart';
 import 'model/Usuario.dart';
 import 'telas/cadastrarDestino.dart';
@@ -15,6 +16,9 @@ class MeuApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: TelaLogin(),
+      routes: {
+        '/screens/TelaCadastro.dart': (context) => TelaCadastro()
+      },
     );
   }
 }
@@ -28,15 +32,22 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
+  //Map<Usuario, String> mapUsuários;
+
   void _entrar() {
     if (_loginController.text == 'adm' && _senhaController.text == '1234') {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) =>
-              TelaPrincipal(Usuario('Administrador', 30, 1000))));
+              TelaPrincipal(Usuario('Administrador', 30, 1000))
+          )
+      );
     } else {
-      // Mostrar mensagem de erro de login
-      // aqui voces colocam para mostrar msg de erro
+      //
     }
+  }
+
+  void _cadastrarUsuario(){
+      Navigator.of(context).pushNamed('/screens/TelaCadastro.dart');
   }
 
   @override
@@ -56,9 +67,16 @@ class _TelaLoginState extends State<TelaLogin> {
               decoration: InputDecoration(labelText: 'Senha'),
               obscureText: true,
             ),
-            ElevatedButton(
-              onPressed: _entrar,
-              child: Text('Entrar'),
+            SizedBox(height: 15),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: _entrar,
+                  child: Text('Entrar'),
+                ),
+                Spacer(),
+                ElevatedButton(onPressed: _cadastrarUsuario, child: Text('Cadastrar-se'))
+              ],
             ),
           ],
         ),
@@ -91,7 +109,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     double precoViagem = viagem.preco;
     if (widget.usuario.saldo >= precoViagem) {
       setState(() {
-        widget.usuario.saldo -= precoViagem;
+        widget.usuario.saldo -= precoViagem.toInt();
         _viagensReservadas.add(viagem.nome);
       });
     } else {
