@@ -95,7 +95,7 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
-  List<String> _viagensReservadas = [];
+  List<Destino> _viagensReservadas = [];
   List<Destino> destinos = [];
   /*List<Map<String, dynamic>> _viagens = [
     {'destino': 'Paris', 'preço': 2000},
@@ -110,7 +110,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     if (widget.usuario.saldo >= precoViagem) {
       setState(() {
         widget.usuario.saldo -= precoViagem.toInt();
-        _viagensReservadas.add(viagem.nome);
+        _viagensReservadas.add(viagem);
       });
     } else {
       showDialog(
@@ -191,7 +191,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                         itemCount: _viagensReservadas.length,
                         itemBuilder: (context, index) {
                           return ListTile(
-                            title: Text(_viagensReservadas[index]),
+                            title: Text(_viagensReservadas[index].nome),
                           );
                         },
                       ),
