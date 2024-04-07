@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ola_mundo/model/Usuario.dart';
-import 'package:ola_mundo/screens/TelaPrincipal.dart';
+import 'package:ola_mundo/screens/tela_principal.dart';
 
 class TelaLogin extends StatefulWidget {
   @override
@@ -17,8 +17,12 @@ class _TelaLoginState extends State<TelaLogin> {
           builder: (context) =>
               TelaPrincipal(Usuario(nome: "Administrador", idade: 30, saldo: 3000.0, nomeUsuario: "Administrador", senha: "123456"))));
     } else {
-      // Mostrar mensagem de erro de login
-      // aqui voces colocam para mostrar msg de erro
+      ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Login ou senha incorretos. Por favor, tente novamente.'),
+        duration: Duration(seconds: 2), // Duração do SnackBar
+      ),
+      );
     }
   } 
 

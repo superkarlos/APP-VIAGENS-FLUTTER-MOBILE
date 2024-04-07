@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:ola_mundo/screens/TelaCadastro.dart';
-import 'package:ola_mundo/screens/TelaLogin.dart';
-import 'package:ola_mundo/screens/TelaPrincipal.dart';
+import 'package:ola_mundo/screens/tela_de_cadastro.dart';
+import 'package:ola_mundo/screens/tela_de_login.dart';
+import 'package:ola_mundo/screens/tela_principal.dart';
 import 'model/Destino.dart';
 import 'model/Usuario.dart';
 import 'telas/cadastrarDestino.dart';

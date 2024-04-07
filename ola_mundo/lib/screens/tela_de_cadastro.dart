@@ -3,7 +3,7 @@ import 'package:ola_mundo/main.dart';
 import 'package:ola_mundo/model/Usuario.dart';
 
 class TelaCadastro extends StatelessWidget {
-  const TelaCadastro({Key? key});
+  const TelaCadastro({super.key});
 
   @override
   Widget build(BuildContext context) {

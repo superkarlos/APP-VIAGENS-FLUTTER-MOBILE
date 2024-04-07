@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ola_mundo/model/Destino.dart';
 import 'package:ola_mundo/model/Usuario.dart';
-import 'package:ola_mundo/screens/TelaLogin.dart';
+import 'package:ola_mundo/screens/tela_de_login.dart';
 import 'package:ola_mundo/telas/cadastrarDestino.dart';
 import 'package:ola_mundo/telas/listarViagensReservadas.dart';
 import 'package:ola_mundo/telas/showDestino.dart';
