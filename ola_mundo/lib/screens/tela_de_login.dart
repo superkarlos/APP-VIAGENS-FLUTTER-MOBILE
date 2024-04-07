@@ -13,65 +13,65 @@ class _TelaLoginState extends State<TelaLogin> {
 
    bool _obscureText = true;
 
-  void _entrar() async {
-    List<Usuario> usuarios = await Usuario.carregarUsuarios();
-    
-    if (usuarios.isEmpty) {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Nenhum usuário cadastrado'),
-            content: Text('Por favor, cadastre-se antes de fazer login.'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Fechar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-      return; 
-    }
+void _entrar() async {
+  if (_loginController.text.isEmpty || _senhaController.text.isEmpty) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Campos vazios'),
+          content: Text('Por favor, preencha todos os campos.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    return;
+  }
 
-    Usuario? usuarioEncontrado;
+  List<Usuario> usuarios = await Usuario.carregarUsuarios();
 
-    for (var usuario in usuarios) {
-      if (usuario.nomeUsuario == _loginController.text && usuario.senha == _senhaController.text) {
-        usuarioEncontrado = usuario;
-        break;
-      }
-    }
+  if (usuarios.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Login ou senha incorretos. Por favor, tente novamente.'),
+        duration: Duration(seconds: 2), // Duração do SnackBar
+      ),
+    );
+    return;
+  }
 
-    if (usuarioEncontrado != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => TelaPrincipal(usuarioEncontrado!),
-        ),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Credenciais Inválidas'),
-            content: Text('Usuário ou senha incorretos.'),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('Fechar'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
+  Usuario? usuarioEncontrado;
+
+  for (var usuario in usuarios) {
+    if (usuario.nomeUsuario == _loginController.text && usuario.senha == _senhaController.text) {
+      usuarioEncontrado = usuario;
+      break;
     }
   }
+
+  if (usuarioEncontrado != null) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => TelaPrincipal(usuarioEncontrado!),
+      ),
+    );
+  } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Login ou senha incorretos. Por favor, tente novamente.'),
+        duration: Duration(seconds: 2), // Duração do SnackBar
+      ),
+    );
+    return;
+  }
+}
 
   void _cadastrarUsuario(){
       Navigator.of(context).pushNamed('/screens/TelaCadastro.dart');
