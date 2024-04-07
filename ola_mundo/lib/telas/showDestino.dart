@@ -96,3 +96,5 @@ void reservarViagem(
     );
   }
 }
+
+FlatButton({required Text child, required Null Function() onPressed}) {}
