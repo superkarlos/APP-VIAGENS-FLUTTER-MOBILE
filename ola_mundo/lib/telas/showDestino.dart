@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/telas/listarViagensReservadas.dart';
+import 'package:ola_mundo/telas/listarViagensReservadas.dart';
 import '../model/Destino.dart';
 import '../main.dart';
 

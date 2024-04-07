@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ola_mundo/screens/TelaCadastro.dart';
 import 'model/Destino.dart';
 import 'model/Usuario.dart';
 import 'telas/cadastrarDestino.dart';
 import 'telas/showDestino.dart';
 import 'telas/listarViagensReservadas.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MeuApp());
 
@@ -15,8 +17,46 @@ class MeuApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TelaLogin(),
+      home: FutureBuilder(
+        future: _carregarUsuario(),
+        builder: (context, AsyncSnapshot<Usuario?> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData && snapshot.data != null) {
+            return TelaPrincipal(snapshot.data!);
+          }
+          return TelaLogin();
+        },
+      ),
+      routes: {
+        '/screens/TelaCadastro.dart': (context) => TelaCadastro()
+      },
     );
+  }
+
+  Future<Usuario?> _carregarUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? nome = prefs.getString('nome');
+    int? idade = prefs.getInt('idade');
+    double? saldo = prefs.getDouble('saldo');
+    String? nomeUsuario = prefs.getString('nomeUsuario');
+    String? senha = prefs.getString('senha');
+
+    if (nome != null &&
+        idade != null &&
+        saldo != null &&
+        nomeUsuario != null &&
+        senha != null) {
+      return Usuario(
+        nome: nome,
+        idade: idade,
+        saldo: saldo,
+        nomeUsuario: nomeUsuario,
+        senha: senha,
+      );
+    }
+    return null;
   }
 }
 
@@ -30,14 +70,11 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _senhaController = TextEditingController();
 
   void _entrar() {
-    if (_loginController.text == 'adm' && _senhaController.text == '1234') {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) =>
-              TelaPrincipal(Usuario('Administrador', 30, 1000))));
-    } else {
-      // Mostrar mensagem de erro de login
-      // aqui voces colocam para mostrar msg de erro
-    }
+   
+  } 
+
+  void _cadastrarUsuario(){
+      Navigator.of(context).pushNamed('/screens/TelaCadastro.dart');
   }
 
   @override
@@ -57,9 +94,19 @@ class _TelaLoginState extends State<TelaLogin> {
               decoration: InputDecoration(labelText: 'Senha'),
               obscureText: true,
             ),
-            ElevatedButton(
-              onPressed: _entrar,
-              child: Text('Entrar'),
+            SizedBox(height: 15),
+            Row(
+              children: [
+                ElevatedButton(
+                  onPressed: null,
+                  child: Text('Entrar'),
+                ),
+                Spacer(),
+                ElevatedButton(
+                  onPressed: _cadastrarUsuario,
+                  child: Text('Cadastrar-se')
+                ),
+              ],
             ),
           ],
         ),
@@ -92,7 +139,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     double precoViagem = viagem.preco;
     if (widget.usuario.saldo >= precoViagem) {
       setState(() {
-        widget.usuario.saldo -= precoViagem;
+        widget.usuario.saldo -= precoViagem.toInt();
         viagensReservadas.add(viagem);
       });
     } else {
@@ -236,7 +283,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         itemCount: destinos.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text('${destinos[index].nome}'),
+            title: Text('${destinos[index].nome} - ${destinos.length}'),
             subtitle: Text('Preço: ${destinos[index].preco}'),
             onTap: () {
               Navigator.push(

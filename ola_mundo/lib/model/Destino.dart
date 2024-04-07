@@ -1,7 +1,5 @@
-//import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:main/model/Cidade.dart';
+import 'package:ola_mundo/model/Cidade.dart';
 
 class Destino {
   //Cidade cidade;

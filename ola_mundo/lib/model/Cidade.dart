@@ -5,5 +5,4 @@ class Cidade{
   Cidade(this.name, this.url);
 
   String get _url => this.url;
-  
 }
