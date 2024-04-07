@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:ola_mundo/screens/tela_de_cadastro.dart';
 import 'package:ola_mundo/screens/tela_de_login.dart';
 import 'package:ola_mundo/screens/tela_principal.dart';
-import 'model/Destino.dart';
 import 'model/Usuario.dart';
-import 'telas/cadastrarDestino.dart';
-import 'telas/showDestino.dart';
-import 'telas/listarViagensReservadas.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(MeuApp());
 
 class MeuApp extends StatelessWidget {
+  const MeuApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

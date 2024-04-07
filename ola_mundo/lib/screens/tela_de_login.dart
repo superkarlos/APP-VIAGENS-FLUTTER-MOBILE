@@ -11,7 +11,65 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  void _entrar() {
+  void _entrar() async {
+    List<Usuario> usuarios = await Usuario.carregarUsuarios();
+
+    if (usuarios.isEmpty) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Nenhum usuário cadastrado'),
+          content: Text('Por favor, cadastre-se antes de fazer login.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    return; 
+    }
+
+    Usuario? usuarioEncontrado;
+
+    for (var usuario in usuarios) {
+    if (usuario.nomeUsuario == _loginController.text && usuario.senha == _senhaController.text) {
+      usuarioEncontrado = usuario;
+      break;
+    }
+    }
+
+    if (usuarioEncontrado != null) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => TelaPrincipal(usuarioEncontrado!),
+      ),
+    );
+    } else {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Credenciais Inválidas'),
+          content: Text('Usuário ou senha incorretos.'),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+    }
+
     if (_loginController.text == 'adm' && _senhaController.text == '1234') {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) =>
