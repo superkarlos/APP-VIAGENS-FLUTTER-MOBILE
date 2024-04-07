@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:main/screens/TelaCadastro.dart';
 import 'model/Destino.dart';
 import 'model/Usuario.dart';
 import 'telas/cadastrarDestino.dart';
 import 'telas/showDestino.dart';
+import 'telas/listarViagensReservadas.dart';
 
 void main() => runApp(MeuApp());
 
@@ -16,9 +16,6 @@ class MeuApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: TelaLogin(),
-      routes: {
-        '/screens/TelaCadastro.dart': (context) => TelaCadastro()
-      },
     );
   }
 }
@@ -32,22 +29,15 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  //Map<Usuario, String> mapUsuários;
-
   void _entrar() {
     if (_loginController.text == 'adm' && _senhaController.text == '1234') {
       Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) =>
-              TelaPrincipal(Usuario('Administrador', 30, 1000))
-          )
-      );
+              TelaPrincipal(Usuario('Administrador', 30, 1000))));
     } else {
-      //
+      // Mostrar mensagem de erro de login
+      // aqui voces colocam para mostrar msg de erro
     }
-  }
-
-  void _cadastrarUsuario(){
-      Navigator.of(context).pushNamed('/screens/TelaCadastro.dart');
   }
 
   @override
@@ -67,16 +57,9 @@ class _TelaLoginState extends State<TelaLogin> {
               decoration: InputDecoration(labelText: 'Senha'),
               obscureText: true,
             ),
-            SizedBox(height: 15),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: _entrar,
-                  child: Text('Entrar'),
-                ),
-                Spacer(),
-                ElevatedButton(onPressed: _cadastrarUsuario, child: Text('Cadastrar-se'))
-              ],
+            ElevatedButton(
+              onPressed: _entrar,
+              child: Text('Entrar'),
             ),
           ],
         ),
@@ -95,7 +78,7 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
-  List<Destino> _viagensReservadas = [];
+  List<Destino> viagensReservadas = [];
   List<Destino> destinos = [];
   /*List<Map<String, dynamic>> _viagens = [
     {'destino': 'Paris', 'preço': 2000},
@@ -109,8 +92,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     double precoViagem = viagem.preco;
     if (widget.usuario.saldo >= precoViagem) {
       setState(() {
-        widget.usuario.saldo -= precoViagem.toInt();
-        _viagensReservadas.add(viagem);
+        widget.usuario.saldo -= precoViagem;
+        viagensReservadas.add(viagem);
       });
     } else {
       showDialog(
@@ -149,6 +132,12 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         .pushReplacement(MaterialPageRoute(builder: (context) => TelaLogin()));
   }
 
+  void atualizarSaldo(double novoSaldo) {
+    setState(() {
+      widget.usuario.saldo = novoSaldo;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,6 +171,15 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             ListTile(
               title: Text('Viagens Reservadas'),
               onTap: () {
+                //Navegar para a página que mostra as viagens reservadas
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViagensReservadasPage(
+                        viagensReservadas: viagensReservadas),
+                  ),
+                );
+                /*
                 showDialog(
                   context: context,
                   builder: (context) {
@@ -205,7 +203,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                       ],
                     );
                   },
-                );
+                );*/
               },
             ),
             ListTile(
@@ -238,13 +236,18 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         itemCount: destinos.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text('${destinos[index].nome} - ${destinos.length}'),
+            title: Text('${destinos[index].nome}'),
             subtitle: Text('Preço: ${destinos[index].preco}'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ShowDestino(destino: destinos[index]),
+                  builder: (context) => ShowDestino(
+                    destino: destinos[index],
+                    viagensReservadas: viagensReservadas,
+                    saldoUsuario: widget.usuario.saldo,
+                    updateSaldoCallback: atualizarSaldo,
+                  ),
                 ),
               );
             },
