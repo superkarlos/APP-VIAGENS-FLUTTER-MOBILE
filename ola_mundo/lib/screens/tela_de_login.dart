@@ -11,6 +11,8 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
+   bool _obscureText = true;
+
   void _entrar() async {
     List<Usuario> usuarios = await Usuario.carregarUsuarios();
     
@@ -85,12 +87,22 @@ class _TelaLoginState extends State<TelaLogin> {
           children: <Widget>[
             TextField(
               controller: _loginController,
-              decoration: InputDecoration(labelText: 'Login'),
+              decoration: InputDecoration(labelText: 'Nome de usário'),
             ),
             TextField(
               controller: _senhaController,
-              decoration: InputDecoration(labelText: 'Senha'),
-              obscureText: true,
+               obscureText: _obscureText,
+                decoration: InputDecoration(
+                  labelText: 'Senha',
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                  ),
+                ),
             ),
             SizedBox(height: 15),
             Row(
