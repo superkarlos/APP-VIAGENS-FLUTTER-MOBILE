@@ -174,7 +174,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         itemCount: destinos.length,
         itemBuilder: (context, index) {
           return ListTile(
-            title: Text('${destinos[index].nome} - ${destinos.length}'),
+            title: Text('${destinos[index].nome}'),
             subtitle: Text('Preço: ${destinos[index].preco}'),
             onTap: () {
               Navigator.push(
