@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ola_mundo/model/Destino.dart';
 import 'package:ola_mundo/model/Usuario.dart';
 import 'package:ola_mundo/screens/tela_de_login.dart';
@@ -30,7 +31,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     double precoViagem = viagem.preco;
     if (widget.usuario.saldo >= precoViagem) {
       setState(() {
-        widget.usuario.saldo -= precoViagem.toInt();
+        widget.usuario.saldo -= precoViagem.toDouble();
         viagensReservadas.add(viagem);
       });
     } else {
@@ -62,7 +63,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   }
 
   void _sairDoApp() {
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    SystemNavigator.pop();
   }
 
   void _sairDoPerfil() {
