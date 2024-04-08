@@ -39,8 +39,8 @@ class _TelaDepositoPageState extends State<TelaDepositoPage> {
             Slider(
               value: _valorDepositado,
               min: 0,
-              max: 1000,
-              divisions: 20,
+              max: 10000,
+              divisions: 100,
               label: 'R\$ ${_valorDepositado.toStringAsFixed(2)}',
               onChanged: (double value) {
                 setState(() {

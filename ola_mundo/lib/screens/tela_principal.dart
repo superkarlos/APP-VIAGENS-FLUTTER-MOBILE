@@ -20,14 +20,19 @@ class TelaPrincipal extends StatefulWidget {
 class _TelaPrincipalState extends State<TelaPrincipal> {
   List<Destino> viagensReservadas = [];
   List<Destino> destinos = [];
-  /*List<Map<String, dynamic>> _viagens = [
-    {'destino': 'Paris', 'preço': 2000},
-    {'destino': 'Tokyo', 'preço': 3000},
-    {'destino': 'Japão', 'preço': 5000},
-    {'destino': 'Brasil', 'preço': 3000},
-    // Adicione mais viagens aqui
-  ];*/
 
+  void initState() {
+    super.initState();
+    _adicionarDestinosPadrao();
+  }
+
+  void _adicionarDestinosPadrao() {
+    destinos.add(Destino('Paris', 5000, 'https://www.segueviagem.com.br/wp-content/uploads/2016/08/Paris-Franca-shutterstock_1829492048-1000x675.jpg'));
+    destinos.add(Destino('Tokyo', 3000, 'https://imgmd.net/images/v1/guia/1684253/tokyo-japao-199-c.jpg'));
+    destinos.add(Destino('Xangai', 3500, 'https://viajologoexisto.com.br/wp-content/uploads/2018/01/O62A9823.jpg'));
+    destinos.add(Destino('Rio De Janeiro', 1500, 'https://a.cdn-hotels.com/gdcs/production165/d100/5e0a7326-4dd3-40cc-9eb7-3af978f69b3d.jpg?impolicy=fcrop&w=800&h=533&q=medium'));
+  }
+  
   void _reservarViagem(Destino viagem) {
     double precoViagem = viagem.preco;
     if (widget.usuario.saldo >= precoViagem) {
