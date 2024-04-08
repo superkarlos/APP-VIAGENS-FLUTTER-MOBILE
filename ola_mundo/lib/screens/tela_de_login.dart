@@ -15,22 +15,11 @@ class _TelaLoginState extends State<TelaLogin> {
 
 void _entrar() async {
   if (_loginController.text.isEmpty || _senhaController.text.isEmpty) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Campos vazios'),
-          content: Text('Por favor, preencha todos os campos.'),
-          actions: <Widget>[
-            FlatButton(
-              child: Text('Fechar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Por favor, preencha todos os campos.'),
+        duration: Duration(seconds: 2),
+      ),
     );
     return;
   }
@@ -41,7 +30,7 @@ void _entrar() async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Login ou senha incorretos. Por favor, tente novamente.'),
-        duration: Duration(seconds: 2), // Duração do SnackBar
+        duration: Duration(seconds: 2),
       ),
     );
     return;
@@ -66,12 +55,13 @@ void _entrar() async {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Login ou senha incorretos. Por favor, tente novamente.'),
-        duration: Duration(seconds: 2), // Duração do SnackBar
+        duration: Duration(seconds: 2),
       ),
     );
     return;
   }
 }
+
 
   void _cadastrarUsuario(){
       Navigator.of(context).pushNamed('/screens/TelaCadastro.dart');
