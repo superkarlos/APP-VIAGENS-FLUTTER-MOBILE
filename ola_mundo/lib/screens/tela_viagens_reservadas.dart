@@ -20,12 +20,6 @@ class ViagensReservadasPage extends StatefulWidget {
 
 class _ViagensReservadasPageState extends State<ViagensReservadasPage> {
 
-  void atualizarSaldo(double saldo) {
-    setState(() {
-      
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
