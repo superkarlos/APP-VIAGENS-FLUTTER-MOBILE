@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:ola_mundo/model/Destino.dart';
 import 'package:ola_mundo/model/Usuario.dart';
 import 'package:ola_mundo/screens/tela_de_login.dart';
-import 'package:ola_mundo/telas/cadastrarDestino.dart';
-import 'package:ola_mundo/telas/listarViagensReservadas.dart';
-import 'package:ola_mundo/telas/showDestino.dart';
+import 'package:ola_mundo/screens/tela_de_cadastro_destinos.dart';
+import 'package:ola_mundo/screens/tela_viagens_reservadas.dart';
+import 'package:ola_mundo/screens/show_destino.dart';
 
 class TelaPrincipal extends StatefulWidget {
   final Usuario usuario;

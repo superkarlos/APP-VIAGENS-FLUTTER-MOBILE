@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ola_mundo/model/Cidade.dart';
 
 class Destino {
-  //Cidade cidade;
   String nome;
   double preco;
 
