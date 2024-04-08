@@ -6,7 +6,7 @@ import '../main.dart';
 class ShowDestino extends StatelessWidget {
   final Destino destino;
   final List<Destino> viagensReservadas;
-  double saldoUsuario;
+  final double saldoUsuario;
   final Function(double) updateSaldoCallback;
 
   ShowDestino({
@@ -21,44 +21,52 @@ class ShowDestino extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Detalhes do Destino'),
+        centerTitle: true,
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              'Nome do destino: ${destino.nome}',
-              style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(
-              'Preço da passagem: ${destino.preco}',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                reservarViagem(context, destino, viagensReservadas,
-                    saldoUsuario, updateSaldoCallback);
-              },
-              child: Text('Reservar Viagem'),
-            ),
-          ],
+        child: Center(
+          child: Column(
+            //mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10.0),
+                child: Image.network(
+                  destino.url,
+                  width: 300,
+                  height: 300,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Nome do destino: ${destino.nome}',
+                style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Preço da passagem: ${destino.preco}',
+                style: TextStyle(fontSize: 16.0),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  reservarViagem(context, destino, viagensReservadas,
+                      saldoUsuario, updateSaldoCallback);
+                },
+                child: Text('Reservar Viagem'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-/*bool _reservarViagem(
-    Destino destino, List<Destino> viagensReservadas, double saldoUSuario) {
-  if (saldoUSuario >= destino.preco) {
-    //saldoUSuario = saldoUSuario - destino.preco;
-    viagensReservadas.add(destino);
-    return true;
-  }
-  return false;
-}*/
 void reservarViagem(
     BuildContext context,
     Destino destino,
@@ -85,16 +93,16 @@ void reservarViagem(
           title: Text('Saldo Insuficiente'),
           content:
               Text('Você não tem saldo suficiente para reservar esta viagem.'),
-          actions: FlatButton(
-            child: Text('Fechar'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
+          actions: [
+            TextButton(
+              child: Text('Fechar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
       },
     );
   }
 }
-
-FlatButton({required Text child, required Null Function() onPressed}) {}
