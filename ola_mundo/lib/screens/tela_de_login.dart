@@ -70,11 +70,18 @@ void _entrar() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 201, 231, 255),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(50.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              width: 150,
+              height: 150,
+              child: Image.asset("assets/images/flutter.png"),
+            ),
+            const SizedBox(height: 70,),
             TextField(
               controller: _loginController,
               decoration: InputDecoration(labelText: 'Nome de usário'),
@@ -99,11 +106,19 @@ void _entrar() async {
               children: [
                 ElevatedButton(
                   onPressed: _entrar,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 199, 229, 253),
+                    foregroundColor: Colors.purple,
+                  ),
                   child: Text('Entrar'),
                 ),
                 Spacer(),
                 ElevatedButton(
                   onPressed: _cadastrarUsuario,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color.fromARGB(255, 199, 229, 253),
+                    foregroundColor: Colors.purple,
+                  ),
                   child: Text('Cadastrar-se')
                 ),
               ],
