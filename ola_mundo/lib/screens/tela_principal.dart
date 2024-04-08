@@ -4,6 +4,7 @@ import 'package:ola_mundo/model/Destino.dart';
 import 'package:ola_mundo/model/Usuario.dart';
 import 'package:ola_mundo/screens/tela_de_login.dart';
 import 'package:ola_mundo/screens/tela_de_cadastro_destinos.dart';
+import 'package:ola_mundo/screens/tela_deposito.dart';
 import 'package:ola_mundo/screens/tela_viagens_reservadas.dart';
 import 'package:ola_mundo/screens/show_destino.dart';
 
@@ -56,10 +57,19 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
     }
   }
 
-  void _depositarDinheiro(int valor) {
+  Future<void> _depositarDinheiro(BuildContext context, Usuario usuario) async {
+    final novoSaldo = await Navigator.push<double>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TelaDepositoPage(usuario: usuario),
+      ),
+    );
+
+    if (novoSaldo != null) {
     setState(() {
-      widget.usuario.saldo += valor;
+      usuario.saldo = novoSaldo;
     });
+    }
   }
 
   void _sairDoApp() {
@@ -101,10 +111,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               onTap: () {},
             ),
             ListTile(
-              title: Text('Depositar Dinheiro 100 reais'),
+              title: Text('Depositar Dinheiro'),
               onTap: () {
-                _depositarDinheiro(
-                    100); // Exemplo de depósito de 100 unidades monetárias
+                _depositarDinheiro(context, widget.usuario);
               },
             ),
             ListTile(
