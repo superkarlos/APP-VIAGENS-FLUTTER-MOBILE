@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:My_App/model/Avaliacao.dart';
 import '../model/Destino.dart';
 
 class ShowDestino extends StatelessWidget {
@@ -6,16 +7,20 @@ class ShowDestino extends StatelessWidget {
   final List<Destino> viagensReservadas;
   final double saldoUsuario;
   final Function(double) updateSaldoCallback;
+  final List<Avaliacao> avaliacoes;
 
   const ShowDestino({super.key, 
     required this.destino,
     required this.viagensReservadas,
     required this.saldoUsuario,
     required this.updateSaldoCallback,
+    required this.avaliacoes,
   });
 
   @override
   Widget build(BuildContext context) {
+    destino.calcularMediaDeNota(avaliacoes);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalhes do Destino'),
@@ -69,6 +74,12 @@ class ShowDestino extends StatelessWidget {
                       ),
                     ],
                   ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Nota de Avaliaçoes: ${destino.mediaDeNota.toStringAsFixed(2)}',
+                  style: const TextStyle(fontSize: 18.0),
+                  textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 20),
                 Text(

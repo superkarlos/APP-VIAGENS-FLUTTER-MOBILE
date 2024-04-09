@@ -224,6 +224,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                       viagensReservadas: viagensReservadas,
                       saldoUsuario: widget.usuario.saldo,
                       updateSaldoCallback: atualizarSaldo,
+                      avaliacoes: avaliacoes,
                     ),
                   ),
                 );
