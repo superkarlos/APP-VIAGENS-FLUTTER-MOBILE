@@ -4,7 +4,7 @@ import 'package:My_App/main.dart';
 import 'package:My_App/model/Usuario.dart';
 
 class TelaCadastro extends StatelessWidget {
-  const TelaCadastro({super.key, });
+  const TelaCadastro({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class TelaCadastro extends StatelessWidget {
 
 class Cadastro extends StatefulWidget {
 
-  const Cadastro({super.key, });
+  const Cadastro({super.key});
 
 
   @override
@@ -32,7 +32,6 @@ class Cadastro extends StatefulWidget {
 
 class _CadastroState extends State<Cadastro> {
   bool _obscureText = true;
-
   final nomeController = TextEditingController();
   final idadeController = TextEditingController();
   final saldoController = TextEditingController();
@@ -46,6 +45,7 @@ class _CadastroState extends State<Cadastro> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Cadastrar usuário'),
+        backgroundColor: Colors.blue,
         actions: [
           ElevatedButton(
             onPressed: () {
@@ -58,23 +58,36 @@ class _CadastroState extends State<Cadastro> {
           ),
         ],
       ),
+      backgroundColor: Color.fromARGB(255, 213, 231, 245),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               TextField(
                 controller: nomeController,
-                decoration: const InputDecoration(labelText: 'Digite seu nome: '),
+                decoration: const InputDecoration(
+                  labelText: 'Digite seu nome: ',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue), // Cor da borda quando em foco
+                  ),
+                  ),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: idadeController,
                 keyboardType: TextInputType.number, 
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
-                decoration: const InputDecoration(labelText: 'Digite sua idade: '),
+                decoration: const InputDecoration(
+                  labelText: 'Digite sua idade: ',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                ),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: saldoController,
                 keyboardType: TextInputType.number, 
@@ -82,18 +95,31 @@ class _CadastroState extends State<Cadastro> {
                   FilteringTextInputFormatter.digitsOnly
                 ],
                 decoration: const InputDecoration(
-                    labelText: 'Digite com quanto você deseja iniciar: '),
+                  labelText: 'Digite com quanto você deseja iniciar:',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                ),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: nomeUsuarioController,
                 decoration: const InputDecoration(
-                    labelText: 'Escolha um nome de usuário: '),
+                  labelText: 'Escolha um nome de usuário:',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                ),
               ),
+              const SizedBox(height: 10),
               TextField(
                 controller: senhaController,
                 obscureText: _obscureText,
                 decoration: InputDecoration(
-                  labelText: 'Escolha uma senha: ',
+                  labelText: 'Escolha uma senha:',
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
                   suffixIcon: IconButton(
                     icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
@@ -148,7 +174,11 @@ class _CadastroState extends State<Cadastro> {
                     });
                   }
                 },
-                child: const Text("Cadastrar")
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text("Cadastrar"),
               ),
             ],
           ),

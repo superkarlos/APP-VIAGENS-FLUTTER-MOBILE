@@ -14,11 +14,10 @@ class MeuApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TelaLogin(),
+      home: const TelaLogin(),
       routes: {
         '/screens/TelaCadastro.dart': (context) => const TelaCadastro()
       },
     );
   }
-
 }
