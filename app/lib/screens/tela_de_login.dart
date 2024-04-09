@@ -3,6 +3,8 @@ import 'package:My_App/model/Usuario.dart';
 import 'package:My_App/screens/tela_principal.dart';
 
 class TelaLogin extends StatefulWidget {
+  const TelaLogin({super.key});
+
   @override
   _TelaLoginState createState() => _TelaLoginState();
 }
