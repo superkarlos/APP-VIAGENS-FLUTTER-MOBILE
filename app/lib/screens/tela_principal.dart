@@ -7,6 +7,7 @@ import 'package:My_App/screens/tela_deposito.dart';
 import 'package:My_App/screens/tela_viagens_reservadas.dart';
 import 'package:My_App/screens/tela_de_cadastro_destinos.dart';
 import 'package:My_App/screens/show_destino.dart';
+import 'package:My_App/screens/lista_comentarios.dart';
 
 class TelaPrincipal extends StatefulWidget {
   final Usuario usuario;
@@ -21,6 +22,7 @@ class TelaPrincipal extends StatefulWidget {
 class _TelaPrincipalState extends State<TelaPrincipal> {
   List<Destino> viagensReservadas = [];
   List<Destino> destinos = [];
+  List<Avaliacao> avaliacoes = [];
 
   @override
   void initState() {
@@ -147,6 +149,24 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                   ),
                 ).then((novoDestino) {
                   if (novoDestino != null) {
+                    setState(() {
+                      // destinos.add(novoDestino);
+                    });
+                  }
+                });
+              },
+            ),
+            _criarDrawerItem(
+              icon: Icons.comment,
+              text: 'Fazer avaliação',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AvaliacaoPage(avaliacoes: avaliacoes),
+                  ),
+                ).then((novaAvaliacao) {
+                  if (novaAvaliacao != null) {
                     setState(() {
                       // destinos.add(novoDestino);
                     });
