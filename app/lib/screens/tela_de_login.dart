@@ -75,62 +75,64 @@ class _TelaLoginState extends State<TelaLogin> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 201, 231, 255),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(50.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: 150,
-                height: 150,
-                child: Image.asset("assets/images/flutter.png"),
-              ),
-              const SizedBox(
-                height: 70,
-              ),
-              TextField(
-                controller: _loginController,
-                decoration: InputDecoration(labelText: 'Nome de usuário'),
-              ),
-              TextField(
-                controller: _senhaController,
-                obscureText: _obscureText,
-                decoration: InputDecoration(
-                  labelText: 'Senha',
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                        _obscureText ? Icons.visibility : Icons.visibility_off),
-                    onPressed: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(50.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: 150,
+                  height: 150,
+                  child: Image.asset("assets/images/flutter.png"),
+                ),
+                const SizedBox(
+                  height: 70,
+                ),
+                TextField(
+                  controller: _loginController,
+                  decoration: InputDecoration(labelText: 'Nome de usuário'),
+                ),
+                TextField(
+                  controller: _senhaController,
+                  obscureText: _obscureText,
+                  decoration: InputDecoration(
+                    labelText: 'Senha',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                          _obscureText ? Icons.visibility : Icons.visibility_off),
+                      onPressed: () {
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 15),
-              Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: _entrar,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 199, 229, 253),
-                      foregroundColor: Colors.purple,
-                    ),
-                    child: Text('Entrar'),
-                  ),
-                  Spacer(),
-                  ElevatedButton(
-                      onPressed: _cadastrarUsuario,
+                SizedBox(height: 15),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: _entrar,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 199, 229, 253),
                         foregroundColor: Colors.purple,
                       ),
-                      child: Text('Cadastrar-se')),
-                ],
-              ),
-            ],
+                      child: Text('Entrar'),
+                    ),
+                    Spacer(),
+                    ElevatedButton(
+                        onPressed: _cadastrarUsuario,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 199, 229, 253),
+                          foregroundColor: Colors.purple,
+                        ),
+                        child: Text('Cadastrar-se')),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:My_App/model/Destino.dart';
+
 import '../model/Avaliacao.dart';
-import 'tela_principal.dart';
 
 class AvaliacaoPage extends StatefulWidget {
   final List<Avaliacao> avaliacoes;
+  final List<Destino> destinosDisponiveis; // Adiciona a lista de destinos disponíveis
 
-  AvaliacaoPage({required this.avaliacoes});
+  AvaliacaoPage({required this.avaliacoes, required this.destinosDisponiveis});
 
   @override
   _AvaliacaoPageState createState() => _AvaliacaoPageState();
@@ -13,15 +15,16 @@ class AvaliacaoPage extends StatefulWidget {
 
 class _AvaliacaoPageState extends State<AvaliacaoPage> {
   final TextEditingController _nomeUsuarioController = TextEditingController();
-  final TextEditingController _nomeDestinoController = TextEditingController();
   final TextEditingController _comentarioController = TextEditingController();
   final TextEditingController _notaController = TextEditingController();
+
+  Destino? _destinoSelecionado;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Avaliações'),
+        title: const Text('Avaliações'),
       ),
       body: ListView.builder(
         itemCount: widget.avaliacoes.length,
@@ -31,6 +34,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Text('Usuário: ${widget.avaliacoes[index].nomeUsuario}'),
                 Text('Comentário: ${widget.avaliacoes[index].textoComentario}'),
                 Text('Nota: ${widget.avaliacoes[index].nota}'),
               ],
@@ -60,9 +64,20 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                TextField(
-                  controller: _nomeDestinoController,
-                  decoration: InputDecoration(labelText: 'Nome do local'),
+                DropdownButton<Destino>(
+                  hint: Text('Selecione o destino'),
+                  value: _destinoSelecionado,
+                  onChanged: (Destino? novoDestino) {
+                    setState(() {
+                      _destinoSelecionado = novoDestino;
+                    });
+                  },
+                  items: widget.destinosDisponiveis.map((destino) {
+                    return DropdownMenuItem<Destino>(
+                      value: destino,
+                      child: Text(destino.nome),
+                    );
+                  }).toList(),
                 ),
                 TextField(
                   controller: _nomeUsuarioController,
@@ -74,7 +89,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                 ),
                 TextField(
                   controller: _notaController,
-                  decoration: InputDecoration(labelText: 'Sua nota (de 1 a 5)'),
+                  decoration: InputDecoration(labelText: 'Sua nota (de 0 a 5)'),
                   keyboardType: TextInputType.number,
                 ),
               ],
@@ -90,26 +105,30 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
             TextButton(
               onPressed: () {
                 // Verificando se todos os campos estão preenchidos
-                if (_nomeDestinoController.text.isNotEmpty &&
+                if (_destinoSelecionado != null &&
                     _nomeUsuarioController.text.isNotEmpty &&
                     _comentarioController.text.isNotEmpty &&
                     _notaController.text.isNotEmpty) {
                   // Convertendo a nota para int
-                  int nota = int.tryParse(_notaController.text) ?? 0;
+                  double nota = double.tryParse(_notaController.text) ?? 0;
 
                   // Verificando se a nota está dentro do intervalo válido (de 1 a 5)
-                  if (nota >= 1 && nota <= 5) {
+                  if (nota >= 0 && nota <= 5) {
                     // Criando uma nova avaliação
                     Avaliacao novaAvaliacao = Avaliacao(
                       nomeUsuario: _nomeUsuarioController.text,
                       textoComentario: _comentarioController.text,
                       nota: nota,
-                      nomeDestino: _nomeDestinoController.text,
+                      nomeDestino: _destinoSelecionado!.nome,
                     );
 
                     // Adicionando a nova avaliação à lista de avaliações
                     setState(() {
                       widget.avaliacoes.add(novaAvaliacao);
+                      _destinoSelecionado = null;
+                      _nomeUsuarioController.text = '';
+                      _comentarioController.text = '';
+                      _notaController.text = '';
                     });
 
                     // Fechando o diálogo
@@ -119,7 +138,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content:
-                            Text('Por favor, insira uma nota válida de 1 a 5.'),
+                            Text('Por favor, insira uma nota válida de 0 a 5.'),
                       ),
                     );
                   }

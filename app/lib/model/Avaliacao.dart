@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Avaliacao {
   final String nomeUsuario; // Adicionando o nome do usuário
   final String textoComentario;
-  final int nota;
+  final double nota;
   final String nomeDestino;
 
   Avaliacao(

@@ -167,7 +167,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AvaliacaoPage(avaliacoes: avaliacoes),
+                    builder: (context) => AvaliacaoPage(avaliacoes: avaliacoes, destinosDisponiveis: destinos),
                   ),
                 ).then((novaAvaliacao) {
                   if (novaAvaliacao != null) {
