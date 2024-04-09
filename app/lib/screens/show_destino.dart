@@ -19,46 +19,79 @@ class ShowDestino extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Detalhes do Destino'),
+        backgroundColor: const Color.fromARGB(255, 213, 231, 245),
         centerTitle: true,
+        toolbarHeight: 100,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            //mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10.0),
-                child: Image.network(
-                  destino.url,
-                  width: 300,
-                  height: 300,
-                  fit: BoxFit.cover,
+      backgroundColor: const Color.fromARGB(255, 213, 231, 245),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+            child: Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  destino.nome,
+                  style: const TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Nome do destino: ${destino.nome}',
-                style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Preço da passagem: ${destino.preco}',
-                style: const TextStyle(fontSize: 16.0),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  reservarViagem(context, destino, viagensReservadas,
-                      saldoUsuario, updateSaldoCallback);
-                },
-                child: const Text('Reservar Viagem'),
-              ),
-            ],
-          ),
+                const SizedBox(height: 20),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network(
+                    destino.url,
+                    width: double.infinity,
+                    height: 300,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 193, 215, 233), // Cor de fundo mais escura
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'Descrição do destino:',
+                        style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      Text(
+                        destino.descricao,
+                        style: const TextStyle(fontSize: 18.0),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Preço da passagem: ${destino.preco}',
+                  style: const TextStyle(fontSize: 18.0),
+                  textAlign: TextAlign.left,
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    reservarViagem(context, destino, viagensReservadas,
+                        saldoUsuario, updateSaldoCallback);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue, // Cor de fundo do botão
+                    foregroundColor: const Color.fromARGB(255, 255, 255, 255), // Cor do texto do botão
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16), // Espaçamento interno
+                    textStyle: const TextStyle(fontSize: 18.0), // Tamanho do texto do botão
+                  ),
+                  child: const Text('Reservar Viagem'),
+                ),
+              ],
+            ),
         ),
       ),
     );

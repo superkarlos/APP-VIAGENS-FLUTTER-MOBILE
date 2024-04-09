@@ -17,6 +17,8 @@ class _CadastrarDestinoPageState extends State<CadastrarDestinoPage> {
   final TextEditingController _nomeController = TextEditingController();
   final TextEditingController _precoController = TextEditingController();
   final TextEditingController _urlController = TextEditingController();
+  final TextEditingController _descricaoController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +51,20 @@ class _CadastrarDestinoPageState extends State<CadastrarDestinoPage> {
               ),
               keyboardType: TextInputType.number,
             ),
+            TextField(
+              controller: _descricaoController,
+              decoration: const InputDecoration(
+                labelText: 'Descrição',
+              ),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 if (_nomeController.text.isNotEmpty &&
-                    _precoController.text.isNotEmpty) {
+                    _precoController.text.isNotEmpty && _descricaoController.text.isNotEmpty) {
                   // Criando um novo destino com os dados fornecidos
                   Destino novoDestino = Destino(_nomeController.text,
-                      double.parse(_precoController.text), _urlController.text);
+                      double.parse(_precoController.text), _urlController.text, _descricaoController.text);
 
                   // Adicionando o novo destino à lista de destinos no main.dart
                   widget.destinos.add(novoDestino);
@@ -95,6 +103,7 @@ class _CadastrarDestinoPageState extends State<CadastrarDestinoPage> {
     // Dispose dos controladores quando a página for descartada
     _nomeController.dispose();
     _precoController.dispose();
+    _descricaoController.dispose();
     super.dispose();
   }
 }

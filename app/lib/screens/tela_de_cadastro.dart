@@ -58,7 +58,7 @@ class _CadastroState extends State<Cadastro> {
           ),
         ],
       ),
-      backgroundColor: Color.fromARGB(255, 213, 231, 245),
+      backgroundColor: const Color.fromARGB(255, 213, 231, 245),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
