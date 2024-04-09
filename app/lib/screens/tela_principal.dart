@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:My_App/model/Usuario.dart';
 import 'package:My_App/model/Destino.dart';
+import 'package:My_App/model/Avaliacao.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/screens/tela_deposito.dart';
 import 'package:My_App/screens/tela_viagens_reservadas.dart';
