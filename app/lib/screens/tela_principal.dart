@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:My_App/model/Usuario.dart';
 import 'package:My_App/model/Destino.dart';
 import 'package:My_App/model/Avaliacao.dart';
+import 'package:My_App/model/Foto.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/screens/tela_deposito.dart';
 import 'package:My_App/screens/tela_viagens_reservadas.dart';
 import 'package:My_App/screens/tela_de_cadastro_destinos.dart';
 import 'package:My_App/screens/show_destino.dart';
 import 'package:My_App/screens/lista_comentarios.dart';
+import 'package:My_App/screens/lista_fotos.dart';
 
 class TelaPrincipal extends StatefulWidget {
   final Usuario usuario;
@@ -24,6 +26,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   List<Destino> viagensReservadas = [];
   List<Destino> destinos = [];
   List<Avaliacao> avaliacoes = [];
+  List<Foto> fotos = [];
 
   @override
   void initState() {
@@ -168,6 +171,24 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                   ),
                 ).then((novaAvaliacao) {
                   if (novaAvaliacao != null) {
+                    setState(() {
+                      // destinos.add(novoDestino);
+                    });
+                  }
+                });
+              },
+            ),
+            _criarDrawerItem(
+              icon: Icons.image,
+              text: 'Upload de fotos',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FotoPage(fotos: fotos),
+                  ),
+                ).then((novaFoto) {
+                  if (novaFoto != null) {
                     setState(() {
                       // destinos.add(novoDestino);
                     });
