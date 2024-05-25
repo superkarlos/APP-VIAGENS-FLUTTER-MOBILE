@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/provider/destiny_list.dart';
-import 'package:My_App/provider/destiny.dart';
+import 'package:My_App/model/destiny_list.dart';
+import 'package:My_App/model/destiny.dart';
 
-import 'package:My_App/model/destiny_view.dart';
+import 'package:My_App/components/destiny_view.dart';
 
 class DestinyGrid extends StatelessWidget {
   @override

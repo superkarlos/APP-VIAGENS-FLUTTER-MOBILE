@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/provider/destiny.dart';
+import 'package:My_App/model/destiny.dart';
 import 'package:My_App/utils/routes.dart';
 
 class DestinyView extends StatelessWidget {

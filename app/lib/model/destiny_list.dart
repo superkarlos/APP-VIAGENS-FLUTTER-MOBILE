@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:My_App/data/data.dart';
-import 'package:My_App/provider/destiny.dart';
+import 'package:My_App/model/destiny.dart';
 import 'package:flutter/material.dart';
 
 

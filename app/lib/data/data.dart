@@ -1,4 +1,4 @@
-import '../provider/destiny.dart';
+import '../model/destiny.dart';
 
 final dummyDestinos = [
   Destiny(

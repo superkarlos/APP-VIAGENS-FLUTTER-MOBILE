@@ -1,10 +1,10 @@
-import 'package:My_App/model/destiny_grid.dart';
+import 'package:My_App/components/destiny_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/provider/destiny_list.dart';
-import 'package:My_App/provider/destiny.dart';
+import 'package:My_App/model/destiny_list.dart';
+import 'package:My_App/model/destiny.dart';
 
 class HomePage extends StatelessWidget {
 

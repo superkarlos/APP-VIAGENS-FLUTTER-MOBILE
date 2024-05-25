@@ -1,8 +1,8 @@
-import 'package:My_App/provider/destiny_list.dart';
+import 'package:My_App/model/destiny_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/provider/destiny.dart';
+import 'package:My_App/model/destiny.dart';
 
 class DestinyDetailPage extends StatelessWidget {
   const DestinyDetailPage({
