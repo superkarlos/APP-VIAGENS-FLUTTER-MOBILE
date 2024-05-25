@@ -1,9 +1,9 @@
 import 'dart:convert';
-import 'package:My_App/screens/tela_principal.dart';
+import 'package:My_App/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:My_App/model/Usuario.dart';
+import 'package:My_App/provider/Usuario.dart';
 import 'package:My_App/screens/tela_de_cadastro.dart';
 import 'package:http/http.dart' as http;
 
@@ -116,7 +116,7 @@ class LoginPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => TelaPrincipal(userId: userId),
+                builder: (context) => HomePage(/*userId: userId*/),
               ),
             );
           } else {

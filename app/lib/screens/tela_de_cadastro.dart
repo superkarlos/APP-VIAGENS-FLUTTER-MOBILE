@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:My_App/main.dart';
-import 'package:My_App/model/Usuario.dart';
+import 'package:My_App/provider/Usuario.dart';
 import 'package:My_App/service/usuario_service.dart';
 import 'package:provider/provider.dart';
 import 'package:My_App/utils/routes.dart';
