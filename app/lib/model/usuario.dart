@@ -3,10 +3,11 @@ import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/foto.dart';
 
 class Usuario with ChangeNotifier {
-  final int id;
-  final String nome;
-  final String usuario;
-  final String senha;
+  int id;
+  String nome;
+  String usuario;
+  String senha;
+  double saldo;
   List<Destino> destinos;
   List<Foto> fotos;
 
@@ -15,6 +16,7 @@ class Usuario with ChangeNotifier {
     required this.nome,
     required this.usuario,
     required this.senha,
+    required this.saldo,
     required this.destinos,
     required this.fotos,
   });
@@ -25,6 +27,7 @@ class Usuario with ChangeNotifier {
       nome: json['nome'] as String,
       usuario: json['usuario'] as String,
       senha: json['senha'] as String,
+      saldo: json['saldo'] as double,
       destinos: (json['destinos'] as List<dynamic>)
           .map((item) => Destino.fromJson(item as Map<String, dynamic>))
           .toList(),
@@ -41,6 +44,7 @@ class Usuario with ChangeNotifier {
       'usuario': usuario,
       'senha': senha,
       'destinos': destinos.map((destino) => destino.toJson()).toList(),
+      'fotos': fotos.map((foto) => foto.toJson()).toList(),
     };
   }
 }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:My_App/provider/Usuario.dart';
+import 'package:My_App/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,11 +24,12 @@ class UsuarioService with ChangeNotifier {
         Uri.parse('$baseUrl/users.json'),
         body: jsonEncode({
           "id": newId,
-          "name": usuario.nome,
-          "idade": usuario.idade,
+          "nome": usuario.nome,
+          "usuario": usuario.usuario,
+          "senha": usuario.senha,
           "saldo": usuario.saldo,
-          "user": usuario.nomeUsuario,
-          "password": usuario.senha,
+          "destinos": usuario.destinos,
+          "fotos": usuario.fotos,
         }),
       );
 
@@ -37,10 +38,11 @@ class UsuarioService with ChangeNotifier {
         usuarios.add(Usuario(
           id: newId,
           nome: usuario.nome,
-          idade: usuario.idade,
-          saldo: usuario.saldo,
-          nomeUsuario: usuario.nomeUsuario,
+          usuario: usuario.usuario,
           senha: usuario.senha,
+          saldo: usuario.saldo,
+          destinos: usuario.destinos,
+          fotos: usuario.fotos,
         ));
         notifyListeners();
       } else {
@@ -60,11 +62,12 @@ class UsuarioService with ChangeNotifier {
         Uri.parse('$baseUrl/users/${usuario.id}.json'),
         body: jsonEncode({
           "id": usuario.id,
-          "name": usuario.nome,
-          "idade": usuario.idade,
+          "nome": usuario.nome,
+          "usuario": usuario.usuario,
+          "senha": usuario.senha,
           "saldo": usuario.saldo,
-          "user": usuario.nomeUsuario,
-          "password": usuario.senha,
+          "destinos": usuario.destinos,
+          "fotos": usuario.fotos,
         }),
       );
       usuarios[index] = usuario;
