@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:My_App/main.dart';
-import 'package:My_App/provider/Usuario.dart';
+import 'package:My_App/model/usuario.dart';
 import 'package:My_App/service/usuario_service.dart';
 import 'package:provider/provider.dart';
 import 'package:My_App/utils/routes.dart';
@@ -32,7 +32,6 @@ class Cadastro extends StatefulWidget {
 class _CadastroState extends State<Cadastro> {
   bool _obscureText = true;
   final nomeController = TextEditingController();
-  final idadeController = TextEditingController();
   final saldoController = TextEditingController();
   final nomeUsuarioController = TextEditingController();
   final senhaController = TextEditingController();
@@ -67,21 +66,6 @@ class _CadastroState extends State<Cadastro> {
                 controller: nomeController,
                 decoration: const InputDecoration(
                   labelText: 'Digite seu nome: ',
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                        color: Colors.blue), // Cor da borda quando em foco
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: idadeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly
-                ],
-                decoration: const InputDecoration(
-                  labelText: 'Digite sua idade: ',
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
                   ),
@@ -153,21 +137,15 @@ class _CadastroState extends State<Cadastro> {
                   Usuario novoUsuario = Usuario(
                     id: 0,
                     nome: nomeController.text,
-                    idade: int.tryParse(idadeController.text) ?? 0,
-                    saldo: double.tryParse(saldoController.text) ?? 0,
-                    nomeUsuario: nomeUsuarioController.text,
+                    usuario: nomeUsuarioController.text,
                     senha: senhaController.text,
+                    saldo: double.tryParse(saldoController.text) ?? 0,
+                    destinos: [],
+                    fotos: [],
                   );
                   try {
                     final userList =
                         Provider.of<UsuarioService>(context, listen: false);
-                    userList
-                        .addUser(novoUsuario)
-                        .then((_) {})
-                        .catchError((error) {
-                      // Lidar com erros aqui
-                      print('Erro ao cadastrar usuário: $error');
-                    });
                     await userList.addUser(novoUsuario);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
