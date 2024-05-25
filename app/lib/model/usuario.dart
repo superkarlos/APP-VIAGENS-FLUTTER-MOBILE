@@ -1,14 +1,16 @@
 import 'package:flutter/cupertino.dart';
+import 'package:My_App/model/destino.dart';
+import 'package:My_App/model/foto.dart';
 
-class User with ChangeNotifier {
+class Usuario with ChangeNotifier {
   final int id;
   final String nome;
   final String usuario;
   final String senha;
   List<Destino> destinos;
-  List<Fotos> fotos;
+  List<Foto> fotos;
 
-  User({
+  Usuario({
     required this.id,
     required this.nome,
     required this.usuario,
@@ -17,8 +19,8 @@ class User with ChangeNotifier {
     required this.fotos,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory Usuario.fromJson(Map<String, dynamic> json) {
+    return Usuario(
       id: json['id'] as int,
       nome: json['nome'] as String,
       usuario: json['usuario'] as String,
