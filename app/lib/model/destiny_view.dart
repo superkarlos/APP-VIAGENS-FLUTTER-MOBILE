@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:My_App/provider/destiny.dart';
+import 'package:My_App/utils/routes.dart';
 
 class DestinyView extends StatelessWidget {
   @override
@@ -17,8 +18,8 @@ class DestinyView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           onTap: () {
-            /*Navigator.of(context)
-                .pushNamed(AppRoutes.destiny_DETAIL, arguments: destiny);*/
+            Navigator.of(context)
+                .pushNamed(AppRoutes.DESTINY_DETAIL, arguments: destiny);
           },
         ),
         footer: GridTileBar(

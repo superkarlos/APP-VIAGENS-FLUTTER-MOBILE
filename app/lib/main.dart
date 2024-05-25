@@ -1,5 +1,7 @@
+import 'package:My_App/screens/destiny_detail_page.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/service/destino_service.dart';
+import 'package:My_App/utils/routes.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -10,7 +12,7 @@ import 'package:provider/provider.dart';
 void main() => runApp(const MeuApp());
 
 class MeuApp extends StatelessWidget {
-  const MeuApp({super.key});
+  const MeuApp({super.key}); 
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class MeuApp extends StatelessWidget {
         ),
         home: LoginPage(),
         routes: {
+          AppRoutes.DESTINY_DETAIL: (context) => const DestinyDetailPage(),
           //AppRoutes.MAINPAGE: (context) => const MeuApp(),
           //AppRoutes.CADASTRO: (context) => const TelaCadastro(),
         },
