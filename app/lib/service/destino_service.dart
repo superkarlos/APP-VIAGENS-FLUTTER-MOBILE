@@ -26,6 +26,7 @@ class DestinoService with ChangeNotifier {
         body: jsonEncode({
           "id": newId,
           "nome": destino.nome,
+          "preco": destino.preco,
           "url_foto": destino.url_foto,
         }),
       );
@@ -35,6 +36,7 @@ class DestinoService with ChangeNotifier {
         destinos.add(Destino(
           id: newId,
           nome: destino.nome,
+          preco: destino.preco,
           url_foto: destino.url_foto,
         ));
         notifyListeners();
@@ -56,6 +58,7 @@ class DestinoService with ChangeNotifier {
         body: jsonEncode({
           "id": destino.id,
           "nome": destino.nome,
+          "preco": destino.preco,
           "url_foto": destino.url_foto,
         }),
       );
@@ -68,14 +71,14 @@ class DestinoService with ChangeNotifier {
     int index = destinos.indexWhere((p) => p.id == destino.id);
 
     if (index >= 0) {
-      await http.delete(Uri.parse('$baseUrl/users/${destino.id}.json'));
+      await http.delete(Uri.parse('$baseUrl/destinos/${destino.id}.json'));
       destinos.removeAt(index);
       notifyListeners();
     }
   }
 
   Future<void> fetchDestinos() async {
-    final url = Uri.parse('$baseUrl/users.json');
+    final url = Uri.parse('$baseUrl/destinos.json');
 
     try {
       final response = await http.get(url);
@@ -100,7 +103,7 @@ class DestinoService with ChangeNotifier {
         print('Falha ao carregar dados: ${response.statusCode}');
       }
     } catch (error) {
-      print('Erro ao carregar usuários: $error');
+      print('Erro ao carregar destinos: $error');
       throw error;
     }
   }
