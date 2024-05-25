@@ -10,11 +10,13 @@ class UsuarioService with ChangeNotifier {
   List<Usuario> usuarios = [];
 
   List<Usuario> get items {
+    fetchUsers();
     return [...usuarios];
   }
 
   Future<void> addUser(Usuario usuario) async {
     try {
+      fetchUsers();
       final int lastId = usuarios.isNotEmpty ? usuarios.last.id ?? 0 : 0;
       final newId = (lastId + 1);
 
