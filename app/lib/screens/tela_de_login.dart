@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:My_App/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -91,7 +92,7 @@ class LoginPage extends StatelessWidget {
 
     try {
       final url =
-          'https://mini-projeto4-default-rtdb.firebaseio.com/users.json';
+          'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/usuarios.json';
 
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -115,7 +116,7 @@ class LoginPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => HomePage(/*userId: userId*/),
+                builder: (context) => TelaPrincipal(userId: userId),
               ),
             );
           } else {
