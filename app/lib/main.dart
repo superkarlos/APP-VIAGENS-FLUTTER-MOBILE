@@ -1,9 +1,8 @@
+import 'package:My_App/screens/tela_de_login.dart';
+import 'package:My_App/service/destino_service.dart';
 import 'package:flutter/material.dart';
 
-import 'package:My_App/screens/home_page.dart';
 import 'package:provider/provider.dart';
-
-import 'package:My_App/provider/destiny_list.dart';
 
 //import 'package:My_App/screens/tela_de_cadastro.dart';
 //import 'package:My_App/screens/tela_de_login.dart';
@@ -16,13 +15,13 @@ class MeuApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (ctx) => DestinyList(),
+      create: (ctx) => DestinoService(),
       child: MaterialApp(
         title: 'App de Viagens',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: HomePage(),
+        home: LoginPage(),
         routes: {
           //AppRoutes.MAINPAGE: (context) => const MeuApp(),
           //AppRoutes.CADASTRO: (context) => const TelaCadastro(),
