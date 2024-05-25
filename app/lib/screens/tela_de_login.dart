@@ -1,134 +1,81 @@
+import 'dart:convert';
+import 'package:My_App/screens/tela_principal.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:My_App/model/Usuario.dart';
-import 'package:My_App/screens/tela_principal.dart';
+import 'package:My_App/screens/tela_de_cadastro.dart';
+import 'package:http/http.dart' as http;
 
-class TelaLogin extends StatefulWidget {
-  const TelaLogin({super.key});
-
-  @override
-  _TelaLoginState createState() => _TelaLoginState();
-}
-
-class _TelaLoginState extends State<TelaLogin> {
-  final TextEditingController _loginController = TextEditingController();
-  final TextEditingController _senhaController = TextEditingController();
-
-  bool _obscureText = true;
-
-  void _entrar() async {
-    if (_loginController.text.isEmpty || _senhaController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Por favor, preencha todos os campos.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    List<Usuario> usuarios = await Usuario.carregarUsuarios();
-
-    if (usuarios.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text('Login ou senha incorretos. Por favor, tente novamente.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-
-    Usuario? usuarioEncontrado;
-
-    for (var usuario in usuarios) {
-      if (usuario.nomeUsuario == _loginController.text &&
-          usuario.senha == _senhaController.text) {
-        usuarioEncontrado = usuario;
-        break;
-      }
-    }
-
-    if (usuarioEncontrado != null) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => TelaPrincipal(usuarioEncontrado!),
-        ),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content:
-              Text('Login ou senha incorretos. Por favor, tente novamente.'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return;
-    }
-  }
-
-  void _cadastrarUsuario() {
-    Navigator.of(context).pushNamed('/screens/TelaCadastro.dart');
-  }
+class LoginPage extends StatelessWidget {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 201, 231, 255),
+      backgroundColor: const Color.fromARGB(255, 201, 231, 255),
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(50.0),
+            padding: const EdgeInsets.all(50.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+              children: [
                 SizedBox(
                   width: 150,
                   height: 150,
                   child: Image.asset("assets/images/flutter.png"),
                 ),
-                const SizedBox(
-                  height: 70,
+                const SizedBox(height: 70),
+                TextField(
+                  controller: _usernameController,
+                  decoration:
+                      const InputDecoration(labelText: 'Nome de Usuário'),
                 ),
                 TextField(
-                  controller: _loginController,
-                  decoration: InputDecoration(labelText: 'Nome de usuário'),
-                ),
-                TextField(
-                  controller: _senhaController,
-                  obscureText: _obscureText,
+                  controller: _passwordController,
+                  obscureText: true,
                   decoration: InputDecoration(
                     labelText: 'Senha',
                     suffixIcon: IconButton(
-                      icon: Icon(
-                          _obscureText ? Icons.visibility : Icons.visibility_off),
+                      icon: const Icon(Icons.visibility_off),
                       onPressed: () {
-                        setState(() {
-                          _obscureText = !_obscureText;
-                        });
+                        // Functionality to toggle password visibility can be added here if needed
                       },
                     ),
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     ElevatedButton(
-                      onPressed: _entrar,
+                      onPressed: () {
+                        _login(context);
+                      },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 199, 229, 253),
+                        backgroundColor:
+                            const Color.fromARGB(255, 199, 229, 253),
                         foregroundColor: Colors.purple,
                       ),
-                      child: Text('Entrar'),
+                      child: const Text('Login'),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(
-                        onPressed: _cadastrarUsuario,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 199, 229, 253),
-                          foregroundColor: Colors.purple,
-                        ),
-                        child: Text('Cadastrar-se')),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaCadastro()),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            const Color.fromARGB(255, 199, 229, 253),
+                        foregroundColor: Colors.purple,
+                      ),
+                      child: const Text('Cadastrar-se'),
+                    ),
                   ],
                 ),
               ],
@@ -137,5 +84,60 @@ class _TelaLoginState extends State<TelaLogin> {
         ),
       ),
     );
+  }
+
+  Future<void> _login(BuildContext context) async {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
+
+    try {
+      final url =
+          'https://mini-projeto4-default-rtdb.firebaseio.com/users.json';
+
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        bool userFound = false;
+        bool passwordCorrect = false;
+        String userId = '';
+
+        data.forEach((id, userData) {
+          if (userData['nomeUsuario'] == username) {
+            userFound = true;
+            if (userData['senha'] == password) {
+              passwordCorrect = true;
+              userId = id;
+            }
+          }
+        });
+
+        if (userFound && passwordCorrect) {
+          if (userId.isNotEmpty) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TelaPrincipal(userId: userId),
+              ),
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Erro ao obter o ID do usuário.')),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Credenciais inválidas')),
+          );
+        }
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Erro ao conectar ao servidor')),
+        );
+      }
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao conectar ao servidor: $error')),
+      );
+    }
   }
 }

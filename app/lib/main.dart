@@ -1,6 +1,7 @@
 import 'package:My_App/screens/tela_de_cadastro.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:flutter/material.dart';
+import 'package:My_App/utils/routes.dart';
 
 void main() => runApp(const MeuApp());
 
@@ -14,9 +15,10 @@ class MeuApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const TelaLogin(),
+      home: LoginPage(),
       routes: {
-        '/screens/TelaCadastro.dart': (context) => const TelaCadastro()
+        AppRoutes.MAINPAGE: (context) => const MeuApp(),
+        AppRoutes.CADASTRO: (context) => const TelaCadastro(),
       },
     );
   }

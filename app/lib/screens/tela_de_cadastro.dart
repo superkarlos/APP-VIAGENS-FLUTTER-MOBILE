@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:My_App/main.dart';
 import 'package:My_App/model/Usuario.dart';
+import 'package:My_App/service/usuario_service.dart';
+import 'package:provider/provider.dart';
+import 'package:My_App/utils/routes.dart';
 
 class TelaCadastro extends StatelessWidget {
   const TelaCadastro({super.key});
@@ -14,17 +17,13 @@ class TelaCadastro extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const Cadastro(),
-      routes: {
-        '/main.dart': (context) => const MeuApp()
-      },
+      routes: {'/main.dart': (context) => const MeuApp()},
     );
   }
 }
 
 class Cadastro extends StatefulWidget {
-
   const Cadastro({super.key});
-
 
   @override
   State<Cadastro> createState() => _CadastroState();
@@ -37,7 +36,7 @@ class _CadastroState extends State<Cadastro> {
   final saldoController = TextEditingController();
   final nomeUsuarioController = TextEditingController();
   final senhaController = TextEditingController();
-  
+
   String? errorMessage;
 
   @override
@@ -69,14 +68,15 @@ class _CadastroState extends State<Cadastro> {
                 decoration: const InputDecoration(
                   labelText: 'Digite seu nome: ',
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue), // Cor da borda quando em foco
+                    borderSide: BorderSide(
+                        color: Colors.blue), // Cor da borda quando em foco
                   ),
-                  ),
+                ),
               ),
               const SizedBox(height: 10),
               TextField(
                 controller: idadeController,
-                keyboardType: TextInputType.number, 
+                keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
@@ -90,7 +90,7 @@ class _CadastroState extends State<Cadastro> {
               const SizedBox(height: 10),
               TextField(
                 controller: saldoController,
-                keyboardType: TextInputType.number, 
+                keyboardType: TextInputType.number,
                 inputFormatters: <TextInputFormatter>[
                   FilteringTextInputFormatter.digitsOnly
                 ],
@@ -121,7 +121,8 @@ class _CadastroState extends State<Cadastro> {
                     borderSide: BorderSide(color: Colors.blue),
                   ),
                   suffixIcon: IconButton(
-                    icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                    icon: Icon(
+                        _obscureText ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
                         _obscureText = !_obscureText;
@@ -131,28 +132,26 @@ class _CadastroState extends State<Cadastro> {
                 ),
               ),
               const SizedBox(height: 10),
-              errorMessage != null 
-              ? 
-              Container(
-                padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.red.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Text(
-                  errorMessage!,
-                  style: const TextStyle(
-                    color: Colors.red, 
-                    fontWeight: FontWeight.bold, 
-                  ),
-                ),
-              )
-              :
-              const SizedBox(),
-        
+              errorMessage != null
+                  ? Container(
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.red.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Text(
+                        errorMessage!,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : const SizedBox(),
               ElevatedButton(
                 onPressed: () async {
                   Usuario novoUsuario = Usuario(
+                    id: 0,
                     nome: nomeController.text,
                     idade: int.tryParse(idadeController.text) ?? 0,
                     saldo: double.tryParse(saldoController.text) ?? 0,
@@ -160,17 +159,27 @@ class _CadastroState extends State<Cadastro> {
                     senha: senhaController.text,
                   );
                   try {
-                    await novoUsuario.salvarUsuario();
+                    final userList =
+                        Provider.of<UsuarioService>(context, listen: false);
+                    userList
+                        .addUser(novoUsuario)
+                        .then((_) {})
+                        .catchError((error) {
+                      // Lidar com erros aqui
+                      print('Erro ao cadastrar usuário: $error');
+                    });
+                    await userList.addUser(novoUsuario);
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Cadastro realizado com sucesso!'),
                         duration: Duration(seconds: 2),
                       ),
                     );
-                    Navigator.of(context).pushNamed('/main.dart');
+                    Navigator.of(context).pushNamed(AppRoutes.MAINPAGE);
                   } catch (e) {
                     setState(() {
-                      errorMessage = 'Esse nome de usuário já existe. Por favor, escolha outro.';
+                      errorMessage =
+                          'Esse nome de usuário já existe. Por favor, escolha outro.';
                     });
                   }
                 },
