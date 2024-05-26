@@ -1,65 +1,49 @@
-/*import 'package:flutter/material.dart';
+import 'package:My_App/service/usuario_service.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:My_App/model/Destino.dart';
+
+import 'package:My_App/components/destiny_grid.dart';
+import 'package:My_App/components/drawer.dart';
+
 import 'package:My_App/service/destino_service.dart';
+import 'package:My_App/model/destino.dart';
+import 'package:My_App/model/usuario.dart';
 
 class TelaPrincipal extends StatelessWidget {
-  final String userId;
+  final int userId;
 
-  const TelaPrincipal({Key? key, required this.userId}) : super(key: key);
+  const TelaPrincipal({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DestinoService(),
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.deepPurple,
-          title: const Text('Comprar Viagem'),
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.exit_to_app),
-              onPressed: () {
-                // Adicione aqui a lógica de sair do app
-              },
-            ),
-          ],
+    print("logado com o id $userId");
+    final provider = Provider.of<DestinoService>(context);
+    final providerUsuario = Provider.of<UsuarioService>(context);
+
+    providerUsuario.fetchUsers();
+    
+    final List<Destino> destinations = provider.items;
+    Usuario usuario = providerUsuario.findUserById(userId);
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        title: const Text(
+          'Comprar Viagem',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        drawer: Drawer(
-          child: ListView(
-            children: <Widget>[
-              // Aqui você pode adicionar itens do Drawer, conforme seu layout
-            ],
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.exit_to_app),
+            onPressed: () {
+              // Adicione aqui a lógica de sair do app
+            },
           ),
-        ),
-        body: Consumer<DestinoService>(
-          builder: (context, provider, child) {
-            if (provider.destinos.isEmpty) {
-              return const Center(child: CircularProgressIndicator());
-            } else {
-              return ListView.builder(
-                itemCount: provider.destinos.length,
-                itemBuilder: (context, index) {
-                  final destino = provider.destinos[index];
-                  return Card(
-                    child: ListTile(
-                      title: Text(destino.nome),
-                      subtitle: Text('Preço: ${destino.preco}'),
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(destino.url_foto),
-                      ),
-                      onTap: () {
-                        // Adicione aqui a navegação para a página de detalhes do destino
-                      },
-                    ),
-                  );
-                },
-              );
-            }
-          },
-        ),
+        ],
       ),
+      drawer: UsuarioDrawer(usuario: usuario),
+      backgroundColor: Colors.deepPurple,
+      body: DestinoGrid(),
     );
   }
 }
-*/
