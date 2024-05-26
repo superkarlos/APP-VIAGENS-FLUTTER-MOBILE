@@ -1,3 +1,4 @@
+import 'package:My_App/screens/destino/tela_cadastro_destino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +49,7 @@ class UsuarioDrawer extends StatelessWidget {
           _criarDrawerItem(
             icon: Icons.account_circle,
             text: 'Perfil',
-            onTap: (){
+            onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => TelaDePerfil(usuario: usuario),
@@ -57,9 +58,9 @@ class UsuarioDrawer extends StatelessWidget {
             },
           ),
           _criarDrawerItem(
-              icon: Icons.monetization_on_outlined,
-              text: 'Depositar Dinheiro',
-              onTap: () {},
+            icon: Icons.monetization_on_outlined,
+            text: 'Depositar Dinheiro',
+            onTap: () {},
           ),
           _criarDrawerItem(
             icon: Icons.card_travel,
@@ -69,17 +70,24 @@ class UsuarioDrawer extends StatelessWidget {
           _criarDrawerItem(
             icon: Icons.add_location,
             text: 'Cadastrar Destino',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TelaCadastroDestino(),
+                ),
+              );
+            },
           ),
           _criarDrawerItem(
             icon: Icons.comment,
             text: 'Fazer avaliação',
             onTap: () {
               Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => AvaliacaoPage(usuario: usuario),
-              ),
-            );
+                MaterialPageRoute(
+                  builder: (context) => AvaliacaoPage(usuario: usuario),
+                ),
+              );
             },
           ),
           _criarDrawerItem(
@@ -90,7 +98,7 @@ class UsuarioDrawer extends StatelessWidget {
           _criarDrawerItem(
             icon: Icons.settings,
             text: 'Configurações',
-            onTap: (){},
+            onTap: () {},
           ),
           _criarDrawerItem(
             icon: Icons.exit_to_app,
@@ -105,7 +113,10 @@ class UsuarioDrawer extends StatelessWidget {
   }
 }
 
-Widget _criarDrawerItem({required IconData icon, required String text, required VoidCallback onTap}) {
+Widget _criarDrawerItem(
+    {required IconData icon,
+    required String text,
+    required VoidCallback onTap}) {
   return ListTile(
     leading: Icon(icon),
     title: Text(text),
