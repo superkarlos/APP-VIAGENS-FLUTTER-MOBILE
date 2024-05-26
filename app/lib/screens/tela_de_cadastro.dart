@@ -1,35 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:My_App/main.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:My_App/service/usuario_service.dart';
 import 'package:provider/provider.dart';
 import 'package:My_App/utils/routes.dart';
 
-class TelaCadastro extends StatelessWidget {
+class TelaCadastro extends StatefulWidget {
   const TelaCadastro({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App de Viagens',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const Cadastro(),
-      routes: {'/main.dart': (context) => const MeuApp()},
-    );
-  }
+  State<TelaCadastro> createState() => _TelaCadastroState();
 }
 
-class Cadastro extends StatefulWidget {
-  const Cadastro({super.key});
-
-  @override
-  State<Cadastro> createState() => _CadastroState();
-}
-
-class _CadastroState extends State<Cadastro> {
+class _TelaCadastroState extends State<TelaCadastro> {
   bool _obscureText = true;
   final nomeController = TextEditingController();
   final saldoController = TextEditingController();
@@ -47,7 +30,7 @@ class _CadastroState extends State<Cadastro> {
         actions: [
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/main.dart');
+              Navigator.of(context).pushNamed(AppRoutes.MAINPAGE);
             },
             child: const Text(
               'Voltar',
@@ -116,22 +99,21 @@ class _CadastroState extends State<Cadastro> {
                 ),
               ),
               const SizedBox(height: 10),
-              errorMessage != null
-                  ? Container(
-                      padding: const EdgeInsets.all(16.0),
-                      decoration: BoxDecoration(
-                        color: Colors.red.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Text(
-                        errorMessage!,
-                        style: const TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  : const SizedBox(),
+              if (errorMessage != null)
+                Container(
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                    color: Colors.red.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
+                  child: Text(
+                    errorMessage!,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ElevatedButton(
                 onPressed: () async {
                   Usuario novoUsuario = Usuario(
@@ -143,22 +125,32 @@ class _CadastroState extends State<Cadastro> {
                     destinos: [],
                     fotos: [],
                   );
-                  try {
-                    final userList =
-                        Provider.of<UsuarioService>(context, listen: false);
-                    await userList.addUser(novoUsuario);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Cadastro realizado com sucesso!'),
-                        duration: Duration(seconds: 2),
-                      ),
-                    );
-                    Navigator.of(context).pushNamed(AppRoutes.MAINPAGE);
-                  } catch (e) {
+
+                  final userList =
+                      Provider.of<UsuarioService>(context, listen: false);
+                  final userNameExists =
+                      await userList.isUserExists(novoUsuario.usuario);
+                  if (userNameExists) {
                     setState(() {
                       errorMessage =
-                          'Esse nome de usuário já existe. Por favor, escolha outro.';
+                          'Já existe um usuário com esse nome do usuário. Por favor, escolha outro.';
                     });
+                  } else {
+                    try {
+                      await userList.addUser(novoUsuario);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Cadastro realizado com sucesso!'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                      Navigator.of(context).pushNamed(AppRoutes.MAINPAGE);
+                    } catch (e) {
+                      setState(() {
+                        errorMessage =
+                            'Erro ao cadastrar usuário: ${e.toString()}';
+                      });
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(

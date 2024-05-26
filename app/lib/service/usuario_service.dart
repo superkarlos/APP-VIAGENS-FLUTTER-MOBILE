@@ -10,13 +10,12 @@ class UsuarioService with ChangeNotifier {
   List<Usuario> usuarios = [];
 
   List<Usuario> get items {
-    fetchUsers();
+    // Aqui, você deve apenas retornar os usuários existentes
     return [...usuarios];
   }
 
   Future<void> addUser(Usuario usuario) async {
     try {
-      fetchUsers();
       final int lastId = usuarios.isNotEmpty ? usuarios.last.id ?? 0 : 0;
       final newId = (lastId + 1);
 
@@ -34,7 +33,6 @@ class UsuarioService with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        //final id = jsonDecode(response.body)['name'];
         usuarios.add(Usuario(
           id: newId,
           nome: usuario.nome,
@@ -114,5 +112,10 @@ class UsuarioService with ChangeNotifier {
       print('Erro ao carregar usuários: $error');
       throw error;
     }
+  }
+
+  Future<bool> isUserExists(String usuarioNome) async {
+    // Não é necessário chamar fetchUsers() aqui
+    return usuarios.any((usuario) => usuario.usuario == usuarioNome);
   }
 }

@@ -41,31 +41,31 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-      apiKey: "AIzaSyCxW_u_hKTUVvo_TIkFg5Qh2Ug99guKPjo",
+      apiKey: "AIzaSyBNaouq1Rzc2uFEA126246wSBMDJfjtLbM",
       authDomain: "mini-projeto4.firebaseapp.com",
-      databaseURL: "https://mini-projeto4-default-rtdb.firebaseio.com",
-      projectId: "mini-projeto4",
-      storageBucket: "mini-projeto4.appspot.com",
-      messagingSenderId: "279527328653",
-      appId: "1:279527328653:web:f9d6b7ccce25883bc70bc4");
+      databaseURL: "https://projeto-unid2-ddm-default-rtdb.firebaseio.com/",
+      projectId: "projeto-unid2-ddm",
+      storageBucket: "projeto-unid2-ddm.appspot.com",
+      messagingSenderId: "353808495533",
+      appId: "1:353808495533:android:2b1288a5489b202205a724");
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey:
-        'AIzaSyANWzC2yCa2Lf5Koq9QCAka-hZ_grKutXE', // Substitua com seu valor real
-    appId: '1:279527328653:android:e79111a9046f4e57c70bc4',
-    messagingSenderId: '279527328653',
-    projectId: 'mini-projeto4',
-    storageBucket: 'mini-projeto4.appspot.com',
+        'AIzaSyBNaouq1Rzc2uFEA126246wSBMDJfjtLbM', // Substitua com seu valor real
+    appId: '1:353808495533:android:2b1288a5489b202205a724',
+    messagingSenderId: '353808495533',
+    projectId: 'projeto-unid2-ddm',
+    storageBucket: 'projeto-unid2-ddm.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey:
-        'AIzaSyD5r-bSX0KWetGOQBwvwd-Ss6zy_faBqQY', // Substitua com seu valor real
-    appId: '1:279527328653:ios:dc819d2bf4a31f45c70bc4',
-    messagingSenderId: '279527328653',
-    projectId: 'mini-projeto4',
-    storageBucket: 'mini-projeto4.appspot.com',
-    iosBundleId: 'com.test.miniprojeto4',
+        'AIzaSyBNaouq1Rzc2uFEA126246wSBMDJfjtLbM', // Substitua com seu valor real
+    appId: '1:353808495533:android:2b1288a5489b202205a724',
+    messagingSenderId: '353808495533',
+    projectId: 'projeto-unid2-ddm',
+    storageBucket: 'projeto-unid2-ddm.appspot.com',
+    iosBundleId: 'com.test.projetounid2',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(

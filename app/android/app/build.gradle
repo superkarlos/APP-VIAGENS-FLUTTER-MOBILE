@@ -24,8 +24,17 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.ola_mundo"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    compileSdkVersion 34  // Alteração: Versão do SDK de compilação atualizada para 34
+    buildToolsVersion "34.0.0"  // Alteração: Versão das ferramentas de compilação correspondente
+
+    defaultConfig {
+        applicationId "com.example.ola_mundo"
+        minSdkVersion flutter.minSdkVersion  // Alteração: Certifique-se de que essa versão é suficiente para seus requisitos
+        targetSdkVersion 34  // Alteração: Versão do SDK alvo atualizada para 34
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true  // Habilita o multidex
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -40,21 +49,8 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.ola_mundo"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdkVersion flutter.minSdkVersion
-        targetSdkVersion flutter.targetSdkVersion
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
-    }
-
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
     }
@@ -64,4 +60,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    implementation 'androidx.multidex:multidex:2.0.1'  // Adiciona a dependência para o MultiDex
+}
