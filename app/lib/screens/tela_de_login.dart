@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:My_App/screens/home_page.dart';
 import 'package:My_App/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:My_App/service/usuario_service.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:My_App/utils/routes.dart';
+import '../screens/avaliacao/tela_de_avaliacao.dart';
 
 class UsuarioDrawer extends StatelessWidget {
   final Usuario usuario;
@@ -43,23 +44,50 @@ class UsuarioDrawer extends StatelessWidget {
               ],
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.account_circle),
-            title: Text('Perfil'),
+          _criarDrawerItem(
+            icon: Icons.account_circle,
+            text: 'Perfil',
+            onTap: (){},
+          ),
+          _criarDrawerItem(
+              icon: Icons.monetization_on_outlined,
+              text: 'Depositar Dinheiro',
+              onTap: () {},
+          ),
+          _criarDrawerItem(
+            icon: Icons.card_travel,
+            text: 'Viagens Reservadas',
+            onTap: () {},
+          ),
+          _criarDrawerItem(
+            icon: Icons.add_location,
+            text: 'Cadastrar Destino',
+            onTap: () {},
+          ),
+          _criarDrawerItem(
+            icon: Icons.comment,
+            text: 'Fazer avaliação',
             onTap: () {
-              // Adicione a lógica para navegar para a página de perfil
+              Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => AvaliacaoPage(usuario: usuario),
+              ),
+            );
             },
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Configurações'),
-            onTap: () {
-              // Adicione a lógica para navegar para a página de configurações
-            },
+          _criarDrawerItem(
+            icon: Icons.image,
+            text: 'Upload de fotos',
+            onTap: () {},
           ),
-          ListTile(
-            leading: Icon(Icons.exit_to_app),
-            title: Text('Sair'),
+          _criarDrawerItem(
+            icon: Icons.settings,
+            text: 'Configurações',
+            onTap: (){},
+          ),
+          _criarDrawerItem(
+            icon: Icons.exit_to_app,
+            text: 'Sair',
             onTap: () {
               Navigator.of(context).pushNamed(AppRoutes.MAIN_PAGE);
             },
@@ -68,4 +96,12 @@ class UsuarioDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _criarDrawerItem({required IconData icon, required String text, required VoidCallback onTap}) {
+  return ListTile(
+    leading: Icon(icon),
+    title: Text(text),
+    onTap: onTap,
+  );
 }

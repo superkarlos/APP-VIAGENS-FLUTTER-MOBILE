@@ -1,7 +1,9 @@
+import 'package:My_App/screens/avaliacao/tela_de_avaliacao.dart';
 import 'package:My_App/screens/destino/destiny_detail_page.dart';
-import 'package:My_App/screens/home_page.dart';
+import 'package:My_App/screens/tela_principal.dart';
 import 'package:My_App/screens/tela_de_cadastro.dart';
 import 'package:My_App/screens/tela_de_login.dart';
+import 'package:My_App/service/avaliacao_service.dart';
 import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/service/usuario_service.dart'; // Importe o UsuarioService
 import 'package:My_App/utils/routes.dart';
@@ -26,8 +28,8 @@ class MeuApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => DestinoService()),
-        ChangeNotifierProvider(
-            create: (ctx) => UsuarioService()), // Adicione o UsuarioService
+        ChangeNotifierProvider(create: (ctx) => UsuarioService()),
+        ChangeNotifierProvider(create: (ctx) => AvaliacaoService()),
       ],
       child: MaterialApp(
         title: 'App de Viagens',
@@ -40,6 +42,7 @@ class MeuApp extends StatelessWidget {
           AppRoutes.MAIN_PAGE: (context) => LoginPage(),
           AppRoutes.CADASTRO: (context) => const TelaCadastro(),
         },
+        
       ),
     );
   }
