@@ -92,7 +92,8 @@ class LoginPage extends StatelessWidget {
     final password = _passwordController.text;
 
     try {
-      final url = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/users.json';
+      final url =
+          'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/users.json';
 
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
@@ -116,9 +117,9 @@ class LoginPage extends StatelessWidget {
         String userId = '';
 
         data.forEach((id, userData) {
-          if (userData['usuario'] == username) { 
+          if (userData['usuario'] == username) {
             userFound = true;
-            if (userData['senha'] == password) { 
+            if (userData['senha'] == password) {
               passwordCorrect = true;
               userId = id;
             }
@@ -130,7 +131,7 @@ class LoginPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => TelaPrincipal(/*userId: userId*/),
+                builder: (context) => TelaPrincipal(userId: userId),
               ),
             );
           } else {
@@ -154,6 +155,4 @@ class LoginPage extends StatelessWidget {
       );
     }
   }
-
-
 }
