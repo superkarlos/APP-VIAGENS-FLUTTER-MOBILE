@@ -1,5 +1,8 @@
+import 'package:My_App/screens/perfil/tela_editar_usuario.dart';
+import 'package:My_App/service/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:My_App/model/usuario.dart';
+import 'package:provider/provider.dart';
 
 class TelaDePerfil extends StatelessWidget {
   final Usuario usuario;
@@ -35,18 +38,24 @@ class TelaDePerfil extends StatelessWidget {
               SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  // Lógica para editar as informações do usuário
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TelaEditarUsuario(usuario: usuario),
+                    ),
+                  );
                 },
-                child: Text(
-                  'Editar Informações'
-                ),
+                child: Text('Editar Informações'),
                 style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white, 
-                  backgroundColor: Colors.green, // Define a cor do texto do botão
-                  shape: RoundedRectangleBorder( // Define a forma do botão
+                  foregroundColor: Colors.white,
+                  backgroundColor:
+                      Colors.green, // Define a cor do texto do botão
+                  shape: RoundedRectangleBorder(
+                    // Define a forma do botão
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), // Define o padding do botão
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12), // Define o padding do botão
                 ),
               ),
             ],
