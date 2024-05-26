@@ -24,12 +24,13 @@ class Destino with ChangeNotifier {
 
   factory Destino.fromJson(Map<String, dynamic> json) {
     return Destino(
-        id: json['id'],
-        nome: json['nome'],
-        descricao: json['descricao'],
-        preco: json['preco'].toDouble(),
-        imagemUrl: json['imagemUrl'],
-        isFavorite: json['isFavorite']);
+      id: json['id'] ?? 0,
+      nome: json['nome'] ?? '',
+      descricao: json['descricao'] ?? '',
+      preco: (json['preco'] ?? 0.0).toDouble(),
+      imagemUrl: json['imagemUrl'] ?? '',
+      isFavorite: json['isFavorite'] ?? false,
+    );
   }
 
   Map<String, dynamic> toJson() {
