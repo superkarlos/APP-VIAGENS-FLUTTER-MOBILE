@@ -27,17 +27,6 @@ class _TelaCadastroState extends State<TelaCadastro> {
       appBar: AppBar(
         title: const Text('Cadastrar usuário'),
         backgroundColor: Colors.blue,
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(AppRoutes.MAINPAGE);
-            },
-            child: const Text(
-              'Voltar',
-              style: TextStyle(color: Colors.black),
-            ),
-          ),
-        ],
       ),
       backgroundColor: const Color.fromARGB(255, 213, 231, 245),
       body: SingleChildScrollView(

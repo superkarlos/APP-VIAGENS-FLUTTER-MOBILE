@@ -92,20 +92,33 @@ class LoginPage extends StatelessWidget {
     final password = _passwordController.text;
 
     try {
-      final url =
-          'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/usuarios.json';
+      final url = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/users.json';
 
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
+        if (response.body == null || response.body.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Nenhum dado encontrado no servidor')),
+          );
+          return;
+        }
+
+        final Map<String, dynamic>? data = json.decode(response.body);
+        if (data == null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Nenhum dado encontrado no servidor')),
+          );
+          return;
+        }
+
         bool userFound = false;
         bool passwordCorrect = false;
         String userId = '';
 
         data.forEach((id, userData) {
-          if (userData['nomeUsuario'] == username) {
+          if (userData['usuario'] == username) { 
             userFound = true;
-            if (userData['senha'] == password) {
+            if (userData['senha'] == password) { 
               passwordCorrect = true;
               userId = id;
             }
@@ -141,4 +154,6 @@ class LoginPage extends StatelessWidget {
       );
     }
   }
+
+
 }
