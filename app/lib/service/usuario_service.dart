@@ -114,4 +114,27 @@ class UsuarioService with ChangeNotifier {
     await fetchUsers();
     return _usuarios.any((usuario) => usuario.usuario == usuarioNome);
   }
+
+  Future<Usuario> findUserById(int id) async {
+    await fetchUsers();
+    final user = _usuarios.firstWhere((user) => user.id == id,
+        orElse: () => Usuario(
+            id: 0,
+            nome: '',
+            usuario: '',
+            senha: '',
+            saldo: 0.0,
+            destinos: [],
+            fotos: []));
+    return user.id != 0
+        ? user
+        : Usuario(
+            id: 0,
+            nome: '',
+            usuario: '',
+            senha: '',
+            saldo: 0.0,
+            destinos: [],
+            fotos: []);
+  }
 }
