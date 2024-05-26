@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:My_App/model/Destino.dart';
+import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,10 +9,16 @@ class DestinoService with ChangeNotifier {
   final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
 
   List<Destino> destinos = [];
+  ValueNotifier<int> updateNotifier = ValueNotifier(0);
 
   List<Destino> get items {
     fetchDestinos();
     return [...destinos];
+  }
+
+  void updateFavorites() {
+    updateNotifier.value++;
+    notifyListeners();
   }
 
   Future<void> addDestino(Destino destino) async {
@@ -27,7 +33,7 @@ class DestinoService with ChangeNotifier {
           "id": newId,
           "nome": destino.nome,
           "preco": destino.preco,
-          "url_foto": destino.url_foto,
+          "imagemUrl": destino.imagemUrl,
         }),
       );
 
@@ -35,9 +41,10 @@ class DestinoService with ChangeNotifier {
         //final id = jsonDecode(response.body)['name'];
         destinos.add(Destino(
           id: newId,
+          descricao: destino.descricao,
           nome: destino.nome,
           preco: destino.preco,
-          url_foto: destino.url_foto,
+          imagemUrl: destino.imagemUrl,
         ));
         notifyListeners();
       } else {
@@ -59,7 +66,7 @@ class DestinoService with ChangeNotifier {
           "id": destino.id,
           "nome": destino.nome,
           "preco": destino.preco,
-          "url_foto": destino.url_foto,
+          "imagemUrl": destino.imagemUrl,
         }),
       );
       destinos[index] = destino;

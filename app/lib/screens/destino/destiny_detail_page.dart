@@ -1,8 +1,8 @@
-import 'package:My_App/model/destiny_list.dart';
+import 'package:My_App/service/destino_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/model/destiny.dart';
+import 'package:My_App/model/destino.dart';
 
 class DestinyDetailPage extends StatelessWidget {
   const DestinyDetailPage({
@@ -12,11 +12,11 @@ class DestinyDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final destiny = Provider.of<Destiny>(context);
+    final destiny = Provider.of<Destino>(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(destiny.title),
+        title: Text(destiny.nome),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -31,13 +31,13 @@ class DestinyDetailPage extends StatelessWidget {
                   border: Border.all(color: Color.fromARGB(255, 238, 107, 107)),
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Image.network(destiny.imageUrl),
+                child: Image.network(destiny.imagemUrl),
               ),
             ),
             Container(
               color: Colors.red, 
               child: Text(
-                '\$${destiny.price.toString()}',
+                '\$${destiny.preco.toString()}',
                 style: TextStyle(
                   color: Colors.white, 
                   fontSize: 30, 
@@ -51,20 +51,20 @@ class DestinyDetailPage extends StatelessWidget {
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Text(destiny.description),
+              child: Text(destiny.descricao),
             ),
             SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 IconButton(
-                  icon: Consumer<Destiny>(
+                  icon: Consumer<Destino>(
                     builder: (context, destiny, child) => Icon(
                         destiny.isFavorite ? Icons.favorite : Icons.favorite_border),
                   ),
                   onPressed: () {
                     destiny.toggleFavorite();
-                    Provider.of<DestinyList>(context, listen: false).updateFavorites();
+                    Provider.of<DestinoService>(context, listen: false).updateFavorites();
                   },
                   color: Theme.of(context).colorScheme.secondary,
                 ),

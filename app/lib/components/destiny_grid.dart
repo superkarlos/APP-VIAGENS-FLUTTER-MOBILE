@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/model/destiny_list.dart';
-import 'package:My_App/model/destiny.dart';
+import 'package:My_App/service/destino_service.dart';
+import 'package:My_App/model/destino.dart';
 
 import 'package:My_App/components/destiny_view.dart';
 
-class DestinyGrid extends StatelessWidget {
+class DestinoGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<DestinyList>(context);
+    final provider = Provider.of<DestinoService>(context);
 
-    final List<Destiny> loadedDestinations = provider.items;
+    final List<Destino> loadedDestinations = provider.items;
 
     return ValueListenableBuilder(
       valueListenable: provider.updateNotifier,
       builder: (ctx, value, _) {
-        final List<Destiny> loadedDestinations = provider.items;
+        final List<Destino> loadedDestinations = provider.items;
         return GridView.builder(
           padding: const EdgeInsets.all(10),
           itemCount: loadedDestinations.length,

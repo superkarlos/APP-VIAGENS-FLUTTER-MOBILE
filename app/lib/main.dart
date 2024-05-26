@@ -1,4 +1,5 @@
-import 'package:My_App/screens/destiny_detail_page.dart';
+import 'package:My_App/screens/destino/destiny_detail_page.dart';
+import 'package:My_App/screens/home_page.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/utils/routes.dart';

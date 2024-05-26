@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/model/destiny.dart';
+import 'package:My_App/model/destino.dart';
 import 'package:My_App/utils/routes.dart';
 
 class DestinyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final destiny = Provider.of<Destiny>(context, listen: false);
+    final destiny = Provider.of<Destino>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
           child: Image.network(
-            destiny.imageUrl,
+            destiny.imagemUrl,
             fit: BoxFit.cover,
           ),
           onTap: () {
@@ -25,7 +25,7 @@ class DestinyView extends StatelessWidget {
         footer: GridTileBar(
           backgroundColor: Colors.black87,
           title: Text(
-            destiny.title,
+            destiny.nome,
             textAlign: TextAlign.center,
           ),
         ),
