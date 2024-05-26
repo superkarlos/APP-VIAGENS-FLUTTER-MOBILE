@@ -1,3 +1,4 @@
+import 'package:My_App/service/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,10 @@ class TelaPrincipal extends StatelessWidget {
   Widget build(BuildContext context) {
     print("logado com o id $userId");
     final provider = Provider.of<DestinoService>(context);
+    final providerUsuario = Provider.of<UsuarioService>(context);
+
+    providerUsuario.fetchUsers();
+    
     final List<Destino> destinations = provider.items;
 
     return Scaffold(
