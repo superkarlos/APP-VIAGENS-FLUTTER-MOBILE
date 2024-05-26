@@ -5,13 +5,10 @@ import 'package:My_App/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'package:My_App/data/data.dart';
-
 class DestinoService with ChangeNotifier {
   final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
 
-  List<Destino> destinos = dummyDestinos;
-  //List<Destino> destinos = [];
+  List<Destino> destinos = [];
   ValueNotifier<int> updateNotifier = ValueNotifier(0);
 
   List<Destino> get items {
@@ -62,11 +59,11 @@ class DestinoService with ChangeNotifier {
     }
   }
 
-  Future<void> updateUser(Destino destino) async {
+  Future<void> updateDestino(Destino destino) async {
     int index = destinos.indexWhere((p) => p.id == destino.id);
 
     if (index >= 0) {
-      await http.patch(
+      await http.put(
         Uri.parse('$baseUrl/destinos/${destino.id}.json'),
         body: jsonEncode({
           "id": destino.id,

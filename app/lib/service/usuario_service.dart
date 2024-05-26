@@ -46,34 +46,80 @@ class UsuarioService with ChangeNotifier {
     }
   }
 
-  Future<void> updateUser(Usuario usuario) async {
-    int index = _usuarios.indexWhere((p) => p.id == usuario.id);
+  Future<MapEntry<String, dynamic>?> _getFirebaseUserId(int userId) async {
+    final url = Uri.parse('$baseUrl/users.json');
+    final response = await http.get(url);
 
-    if (index >= 0) {
-      await http.patch(
-        Uri.parse('$baseUrl/users/${usuario.id}.json'),
-        body: jsonEncode({
-          "id": usuario.id,
-          "nome": usuario.nome,
-          "usuario": usuario.usuario,
-          "senha": usuario.senha,
-          "saldo": usuario.saldo,
-          "destinos": usuario.destinos,
-          "fotos": usuario.fotos,
-        }),
+    if (response.statusCode == 200) {
+      final responseBody = json.decode(response.body) as Map<String, dynamic>;
+      final userEntry = responseBody.entries.firstWhere(
+        (entry) => entry.value['id'] == userId,
+        orElse: () => MapEntry<String, dynamic>('not_found', null),
       );
-      _usuarios[index] = usuario;
-      notifyListeners();
+
+      if (userEntry.key != 'not_found') {
+        return userEntry;
+      }
+    } else {
+      throw Exception('Falha ao carregar usuários do Firebase: ${response.statusCode}');
     }
+
+    return null;
   }
 
-  Future<void> removeUser(Usuario usuario) async {
-    int index = _usuarios.indexWhere((p) => p.id == usuario.id);
+  Future<void> updateUser(Usuario usuario) async {
+    try {
+      // Find the Firebase ID
+      final userEntry = await _getFirebaseUserId(usuario.id);
+      if (userEntry != null) {
+        final firebaseId = userEntry.key;
 
-    if (index >= 0) {
-      await http.delete(Uri.parse('$baseUrl/users/${usuario.id}.json'));
-      _usuarios.removeAt(index);
-      notifyListeners();
+        // Update the user in Firebase
+        final response = await http.patch(
+          Uri.parse('$baseUrl/users/$firebaseId.json'),
+          body: jsonEncode({
+            "id": usuario.id,
+            "nome": usuario.nome,
+            "usuario": usuario.usuario,
+            "senha": usuario.senha,
+            "saldo": usuario.saldo,
+            "destinos": usuario.destinos,
+            "fotos": usuario.fotos,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          // Update the user in the local list
+          final index = _usuarios.indexWhere((p) => p.id == usuario.id);
+          if (index >= 0) {
+            _usuarios[index] = usuario;
+            notifyListeners();
+          }
+        } else {
+          print('Falha ao atualizar usuário: ${response.statusCode}');
+        }
+      } else {
+        print('Usuário não encontrado no Firebase.');
+      }
+    } catch (error) {
+      print('Erro ao atualizar usuário: $error');
+      throw error;
+    }
+  }
+  
+  Future<void> removeUser(Usuario usuario) async {
+    final userEntry = await _getFirebaseUserId(usuario.id);
+    if (userEntry != null) {
+      final firebaseId = userEntry.key;
+      int index = _usuarios.indexWhere((p) => p.id == usuario.id);
+
+      if (index >= 0) {
+        await http.delete(Uri.parse('$baseUrl/users/$firebaseId.json'));
+        _usuarios.removeAt(index);
+        notifyListeners();
+      }
+    } else {
+      print('Usuário não encontrado no Firebase.');
     }
   }
 

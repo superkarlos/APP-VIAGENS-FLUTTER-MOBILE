@@ -1,4 +1,5 @@
 import 'package:My_App/screens/perfil/tela_editar_usuario.dart';
+import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/service/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:My_App/model/usuario.dart';
@@ -11,6 +12,9 @@ class TelaDePerfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final usuarioService = Provider.of<UsuarioService>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Perfil'),
@@ -56,6 +60,29 @@ class TelaDePerfil extends StatelessWidget {
                   padding: EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12), // Define o padding do botão
+                ),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  usuarioService.removeUser(usuario);
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                  );
+                },
+                child: Text('Deletar Usuário'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ],

@@ -1,3 +1,4 @@
+import 'package:My_App/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:My_App/service/usuario_service.dart';
@@ -95,7 +96,13 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
                         await Provider.of<UsuarioService>(context,
                                 listen: false)
                             .updateUser(updatedUsuario);
-                        Navigator.pop(context);
+                        await Provider.of<UsuarioService>(context, listen: false)
+                            .fetchUsers();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => TelaPrincipal(userId: widget.usuario.id),
+                          ),
+                        );
                       }
                     },
                     child: Text('Salvar Alterações'),
