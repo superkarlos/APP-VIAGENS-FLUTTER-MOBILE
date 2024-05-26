@@ -7,6 +7,7 @@ import 'package:My_App/components/drawer.dart';
 
 import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/model/destino.dart';
+import 'package:My_App/model/usuario.dart';
 
 class TelaPrincipal extends StatelessWidget {
   final int userId;
@@ -22,6 +23,7 @@ class TelaPrincipal extends StatelessWidget {
     providerUsuario.fetchUsers();
     
     final List<Destino> destinations = provider.items;
+    Usuario usuario = providerUsuario.findUserById(userId);
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +41,7 @@ class TelaPrincipal extends StatelessWidget {
           ),
         ],
       ),
-      drawer: UsuarioDrawer(userId: userId),
+      drawer: UsuarioDrawer(usuario: usuario),
       backgroundColor: Colors.deepPurple,
       body: DestinoGrid(),
     );

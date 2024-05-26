@@ -6,13 +6,12 @@ import 'package:My_App/model/usuario.dart';
 import 'package:My_App/utils/routes.dart';
 
 class UsuarioDrawer extends StatelessWidget {
-  final int userId;
-  const UsuarioDrawer({Key? key, required this.userId}) : super(key: key);
+  final Usuario usuario;
+  const UsuarioDrawer({Key? key, required this.usuario}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final usuarioService = Provider.of<UsuarioService>(context, listen: false);
-    Usuario usuario = usuarioService.findUserById(userId);
 
     return Drawer(
       child: ListView(
