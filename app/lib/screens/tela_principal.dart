@@ -17,12 +17,13 @@ class TelaPrincipal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("logado com o id $userId");
-    final provider = Provider.of<DestinoService>(context);
+    final providerDestino = Provider.of<DestinoService>(context);
     final providerUsuario = Provider.of<UsuarioService>(context);
 
     providerUsuario.fetchUsers();
-    
-    final List<Destino> destinations = provider.items;
+    providerDestino.fetchDestinos();
+
+    final List<Destino> destinations = providerDestino.items;
     Usuario usuario = providerUsuario.findUserById(userId);
 
     return Scaffold(
