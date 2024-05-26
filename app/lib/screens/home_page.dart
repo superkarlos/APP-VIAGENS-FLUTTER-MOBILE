@@ -1,6 +1,8 @@
-import 'package:My_App/components/destiny_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:My_App/components/destiny_grid.dart';
+import 'package:My_App/components/drawer.dart';
 
 import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/model/destino.dart';
@@ -32,6 +34,7 @@ class TelaPrincipal extends StatelessWidget {
           ),
         ],
       ),
+      drawer: UsuarioDrawer(userId: userId),
       backgroundColor: Colors.deepPurple,
       body: DestinoGrid(),
     );

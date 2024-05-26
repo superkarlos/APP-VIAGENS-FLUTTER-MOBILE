@@ -133,7 +133,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                           duration: Duration(seconds: 2),
                         ),
                       );
-                      Navigator.of(context).pushNamed(AppRoutes.MAINPAGE);
+                      Navigator.of(context).pushNamed(AppRoutes.MAIN_PAGE);
                     } catch (e) {
                       setState(() {
                         errorMessage =
