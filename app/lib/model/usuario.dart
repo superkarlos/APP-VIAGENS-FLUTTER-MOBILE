@@ -27,7 +27,7 @@ class Usuario with ChangeNotifier {
       nome: json['nome'] as String,
       usuario: json['usuario'] as String,
       senha: json['senha'] as String,
-      saldo: json['saldo'] as double,
+      saldo: (json['saldo'] as num).toDouble(),
       destinos: (json['destinos'] as List<dynamic>?)
               ?.map((item) => Destino.fromJson(item as Map<String, dynamic>))
               .toList() ??
@@ -45,6 +45,7 @@ class Usuario with ChangeNotifier {
       'nome': nome,
       'usuario': usuario,
       'senha': senha,
+      'saldo': saldo,
       'destinos': destinos.map((destino) => destino.toJson()).toList(),
       'fotos': fotos.map((foto) => foto.toJson()).toList(),
     };

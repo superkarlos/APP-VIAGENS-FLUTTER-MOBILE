@@ -110,7 +110,7 @@ class _TelaCadastroState extends State<TelaCadastro> {
                     nome: nomeController.text,
                     usuario: nomeUsuarioController.text,
                     senha: senhaController.text,
-                    saldo: double.tryParse(saldoController.text) ?? 0,
+                    saldo: double.tryParse(saldoController.text) ?? 0.0,
                     destinos: [],
                     fotos: [],
                   );
