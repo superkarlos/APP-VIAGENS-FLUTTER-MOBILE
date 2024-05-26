@@ -7,8 +7,8 @@ import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/model/destino.dart';
 
 class TelaPrincipal extends StatelessWidget {
-  final String userId;
-  const TelaPrincipal({Key? key, required this.userId}) : super(key: key);
+  //final String userId;
+  //const TelaPrincipal({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,10 @@ class TelaPrincipal extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Colors.deepPurple,
-          title: const Text('Comprar Viagem'),
+          title: const Text(
+            'Comprar Viagem',
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.exit_to_app),
@@ -28,6 +31,7 @@ class TelaPrincipal extends StatelessWidget {
             ),
           ],
         ),
+      backgroundColor: Colors.deepPurple,
       body: DestinoGrid()
     );
   }

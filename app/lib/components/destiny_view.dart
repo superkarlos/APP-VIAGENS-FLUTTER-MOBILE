@@ -1,3 +1,4 @@
+import 'package:My_App/screens/destino/destiny_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +19,18 @@ class DestinyView extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           onTap: () {
-            Navigator.of(context)
-                .pushNamed(AppRoutes.DESTINY_DETAIL, arguments: destiny);
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider.value(
+                  value: destiny, // Aqui você passa a instância de Destino
+                  child: DestinyDetailPage(),
+                ),
+              ),
+            );
           },
         ),
         footer: GridTileBar(
-          backgroundColor: Colors.black87,
+          backgroundColor: Color.fromARGB(221, 58, 7, 82),
           title: Text(
             destiny.nome,
             textAlign: TextAlign.center,

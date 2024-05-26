@@ -117,7 +117,7 @@ class LoginPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => TelaPrincipal(userId: userId),
+                builder: (context) => TelaPrincipal(/*userId: userId*/),
               ),
             );
           } else {
