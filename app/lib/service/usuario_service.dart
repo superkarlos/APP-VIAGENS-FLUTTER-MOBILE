@@ -125,7 +125,7 @@ class UsuarioService with ChangeNotifier {
             senha: '',
             saldo: 0.0,
             destinos: [],
-            fotos: []));
+            fotos: [])); // Adicionei um usuário dummy com id 0
     return user.id != 0
         ? user
         : Usuario(
@@ -135,6 +135,6 @@ class UsuarioService with ChangeNotifier {
             senha: '',
             saldo: 0.0,
             destinos: [],
-            fotos: []);
+            fotos: []); // Retornando usuário vazio com id 0
   }
 }
