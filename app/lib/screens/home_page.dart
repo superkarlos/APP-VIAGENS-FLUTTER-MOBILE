@@ -6,12 +6,13 @@ import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/model/destino.dart';
 
 class TelaPrincipal extends StatelessWidget {
-  final String userId;
+  final int userId;
 
   const TelaPrincipal({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
+    print("logado com o id $userId");
     final provider = Provider.of<DestinoService>(context);
     final List<Destino> destinations = provider.items;
 

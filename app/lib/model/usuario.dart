@@ -28,12 +28,14 @@ class Usuario with ChangeNotifier {
       usuario: json['usuario'] as String,
       senha: json['senha'] as String,
       saldo: json['saldo'] as double,
-      destinos: (json['destinos'] as List<dynamic>)
-          .map((item) => Destino.fromJson(item as Map<String, dynamic>))
-          .toList(),
-      fotos: (json['fotos'] as List<dynamic>)
-          .map((item) => Foto.fromJson(item as Map<String, dynamic>))
-          .toList(),
+      destinos: (json['destinos'] as List<dynamic>?)
+              ?.map((item) => Destino.fromJson(item as Map<String, dynamic>))
+              .toList() ??
+          [],
+      fotos: (json['fotos'] as List<dynamic>?)
+              ?.map((item) => Foto.fromJson(item as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
   }
 

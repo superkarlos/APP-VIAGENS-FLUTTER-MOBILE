@@ -97,7 +97,7 @@ class LoginPage extends StatelessWidget {
 
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200) {
-        if (response.body == null || response.body.isEmpty) {
+        if (response.body.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Nenhum dado encontrado no servidor')),
           );
@@ -114,31 +114,25 @@ class LoginPage extends StatelessWidget {
 
         bool userFound = false;
         bool passwordCorrect = false;
-        String userId = '';
+        int userId = 0;
 
         data.forEach((id, userData) {
           if (userData['usuario'] == username) {
             userFound = true;
             if (userData['senha'] == password) {
               passwordCorrect = true;
-              userId = id;
+              userId = userData['id'];
             }
           }
         });
 
         if (userFound && passwordCorrect) {
-          if (userId.isNotEmpty) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => TelaPrincipal(userId: userId),
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Erro ao obter o ID do usuário.')),
-            );
-          }
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TelaPrincipal(userId: userId),
+            ),
+          );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Credenciais inválidas')),

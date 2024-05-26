@@ -7,16 +7,17 @@ import 'package:http/http.dart' as http;
 class UsuarioService with ChangeNotifier {
   final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
 
-  List<Usuario> usuarios = [];
+  List<Usuario> _usuarios = [];
 
-  List<Usuario> get items {
-    // Aqui, você deve apenas retornar os usuários existentes
-    return [...usuarios];
+  Future<List<Usuario>> get items async {
+    await fetchUsers();
+    return [..._usuarios];
   }
 
   Future<void> addUser(Usuario usuario) async {
     try {
-      final int lastId = usuarios.isNotEmpty ? usuarios.last.id ?? 0 : 0;
+      await fetchUsers();
+      final int lastId = _usuarios.isNotEmpty ? _usuarios.last.id ?? 0 : 0;
       final newId = (lastId + 1);
 
       final response = await http.post(
@@ -33,15 +34,8 @@ class UsuarioService with ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        usuarios.add(Usuario(
-          id: newId,
-          nome: usuario.nome,
-          usuario: usuario.usuario,
-          senha: usuario.senha,
-          saldo: usuario.saldo,
-          destinos: usuario.destinos,
-          fotos: usuario.fotos,
-        ));
+        usuario.id = newId;
+        _usuarios.add(usuario);
         notifyListeners();
       } else {
         print('Falha ao adicionar usuário: ${response.statusCode}');
@@ -53,7 +47,7 @@ class UsuarioService with ChangeNotifier {
   }
 
   Future<void> updateUser(Usuario usuario) async {
-    int index = usuarios.indexWhere((p) => p.id == usuario.id);
+    int index = _usuarios.indexWhere((p) => p.id == usuario.id);
 
     if (index >= 0) {
       await http.patch(
@@ -68,17 +62,17 @@ class UsuarioService with ChangeNotifier {
           "fotos": usuario.fotos,
         }),
       );
-      usuarios[index] = usuario;
+      _usuarios[index] = usuario;
       notifyListeners();
     }
   }
 
   Future<void> removeUser(Usuario usuario) async {
-    int index = usuarios.indexWhere((p) => p.id == usuario.id);
+    int index = _usuarios.indexWhere((p) => p.id == usuario.id);
 
     if (index >= 0) {
       await http.delete(Uri.parse('$baseUrl/users/${usuario.id}.json'));
-      usuarios.removeAt(index);
+      _usuarios.removeAt(index);
       notifyListeners();
     }
   }
@@ -95,16 +89,18 @@ class UsuarioService with ChangeNotifier {
           return;
         }
 
-        final Map<String, dynamic> data = responseBody as Map<String, dynamic>;
-        List<Usuario> loadedusers = [];
-        data.forEach((id, userData) {
-          if (userData != null) {
-            loadedusers.add(Usuario.fromJson(userData));
-          }
-        });
-
-        usuarios = loadedusers;
-        notifyListeners();
+        if (responseBody is Map<String, dynamic>) {
+          List<Usuario> loadedUsers = [];
+          responseBody.forEach((id, userData) {
+            if (userData != null) {
+              loadedUsers.add(Usuario.fromJson(userData));
+            }
+          });
+          _usuarios = loadedUsers;
+          notifyListeners();
+        } else {
+          print('Resposta do servidor não é um Map<String, dynamic>');
+        }
       } else {
         print('Falha ao carregar dados: ${response.statusCode}');
       }
@@ -115,7 +111,7 @@ class UsuarioService with ChangeNotifier {
   }
 
   Future<bool> isUserExists(String usuarioNome) async {
-    // Não é necessário chamar fetchUsers() aqui
-    return usuarios.any((usuario) => usuario.usuario == usuarioNome);
+    await fetchUsers();
+    return _usuarios.any((usuario) => usuario.usuario == usuarioNome);
   }
 }
