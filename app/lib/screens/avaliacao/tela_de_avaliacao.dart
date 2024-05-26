@@ -4,6 +4,7 @@ import 'package:My_App/model/usuario.dart';
 import 'package:My_App/model/avaliacao.dart';
 import '../../service/avaliacao_service.dart';
 import '../../service/destino_service.dart';
+import '../../service/usuario_service.dart';
 import 'package:provider/provider.dart';
 
 class AvaliacaoPage extends StatefulWidget {
@@ -17,14 +18,20 @@ class AvaliacaoPage extends StatefulWidget {
 
 class _AvaliacaoPageState extends State<AvaliacaoPage> {
   final TextEditingController _comentarioController = TextEditingController();
-  final TextEditingController _notaController = TextEditingController();
 
   Destino? _destinoSelecionado;
 
   @override
+  void initState() {
+    super.initState();
+    Provider.of<UsuarioService>(context, listen: false).fetchUsers();
+    Provider.of<DestinoService>(context, listen: false).fetchDestinos();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final avaliacoes = Provider.of<AvaliacaoService>(context).avaliacoes;
-    final destinosDisponiveis = Provider.of<DestinoService>(context).destinos;
+    final destinosDisponiveis = Provider.of<DestinoService>(context).items;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,7 +47,6 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
               children: [
                 Text('Usuário: ${avaliacoes[index].usuario_id}'),
                 Text('Comentário: ${avaliacoes[index].avaliacao}'),
-                // Text('Nota: ${avaliacoes[index].nota}'), // Adicione essa linha se a avaliação tiver uma nota
               ],
             ),
           );
@@ -87,11 +93,6 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                   controller: _comentarioController,
                   decoration: InputDecoration(labelText: 'Seu comentário'),
                 ),
-                TextField(
-                  controller: _notaController,
-                  decoration: InputDecoration(labelText: 'Sua nota (de 0 a 5)'),
-                  keyboardType: TextInputType.number,
-                ),
               ],
             ),
           ),
@@ -104,42 +105,28 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
             ),
             TextButton(
               onPressed: () async {
-                if (_destinoSelecionado != null &&
-                    _comentarioController.text.isNotEmpty &&
-                    _notaController.text.isNotEmpty) {
-                  double nota = double.tryParse(_notaController.text) ?? 0;
+                if (_destinoSelecionado != null && _comentarioController.text.isNotEmpty) {
+                  Avaliacao novaAvaliacao = Avaliacao(
+                    id: 0, // Será substituído pelo ID gerado no servidor
+                    usuario_id: widget.usuario.id,
+                    destino_id: _destinoSelecionado!.id!,
+                    avaliacao: _comentarioController.text,
+                  );
 
-                  if (nota >= 0 && nota <= 5) {
-                    Avaliacao novaAvaliacao = Avaliacao(
-                      id: 0, // Será substituído pelo ID gerado no servidor
-                      usuario_id: widget.usuario.id,
-                      destino_id: _destinoSelecionado!.id!,
-                      avaliacao: _comentarioController.text,
-                    //  nota: nota, // Adicionando a nota à avaliação
-                    );
+                  try {
+                    await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(novaAvaliacao);
 
-                    try {
-                      await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(novaAvaliacao);
+                    setState(() {
+                      Provider.of<AvaliacaoService>(context, listen: false).avaliacoes.add(novaAvaliacao);
+                      _destinoSelecionado = null;
+                      _comentarioController.text = '';
+                    });
 
-                      setState(() {
-                        Provider.of<AvaliacaoService>(context, listen: false).avaliacoes.add(novaAvaliacao);
-                        _destinoSelecionado = null;
-                        _comentarioController.text = '';
-                        _notaController.text = '';
-                      });
-
-                      Navigator.of(context).pop();
-                    } catch (error) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Falha ao salvar a avaliação. Tente novamente.'),
-                        ),
-                      );
-                    }
-                  } else {
+                    Navigator.of(context).pop();
+                  } catch (error) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Por favor, insira uma nota válida de 0 a 5.'),
+                        content: Text('Falha ao salvar a avaliação. Tente novamente.'),
                       ),
                     );
                   }
