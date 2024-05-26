@@ -9,7 +9,7 @@ import 'package:My_App/data/data.dart';
 
 class DestinoService with ChangeNotifier {
   final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
-  
+
   List<Destino> destinos = dummyDestinos;
   //List<Destino> destinos = [];
   ValueNotifier<int> updateNotifier = ValueNotifier(0);
@@ -26,7 +26,7 @@ class DestinoService with ChangeNotifier {
 
   Future<void> addDestino(Destino destino) async {
     try {
-      fetchDestinos();
+      await fetchDestinos();
       final int lastId = destinos.isNotEmpty ? destinos.last.id ?? 0 : 0;
       final newId = (lastId + 1);
 
