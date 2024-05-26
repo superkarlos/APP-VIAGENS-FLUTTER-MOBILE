@@ -5,6 +5,7 @@ import 'package:My_App/service/usuario_service.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:My_App/screens/perfil/tela_de_perfil.dart';
 import 'package:My_App/utils/routes.dart';
+import '../screens/avaliacao/tela_de_avaliacao.dart';
 
 class UsuarioDrawer extends StatelessWidget {
   final Usuario usuario;
@@ -73,7 +74,13 @@ class UsuarioDrawer extends StatelessWidget {
           _criarDrawerItem(
             icon: Icons.comment,
             text: 'Fazer avaliação',
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => AvaliacaoPage(usuario: usuario),
+              ),
+            );
+            },
           ),
           _criarDrawerItem(
             icon: Icons.image,
