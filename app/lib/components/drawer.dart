@@ -1,13 +1,19 @@
-import 'package:My_App/utils/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:My_App/service/usuario_service.dart';
+import 'package:My_App/model/usuario.dart';
+import 'package:My_App/utils/routes.dart';
 
 class UsuarioDrawer extends StatelessWidget {
   final int userId;
-
   const UsuarioDrawer({Key? key, required this.userId}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final usuarioService = Provider.of<UsuarioService>(context, listen: false);
+    Usuario usuario = usuarioService.findUserById(userId);
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -16,12 +22,26 @@ class UsuarioDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.deepPurple,
             ),
-            child: Text(
-              'Bem-vindo, Usuário $userId',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Bem-vindo,',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                  ),
+                ),
+                Text(
+                  '${usuario.nome}',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
           ListTile(
