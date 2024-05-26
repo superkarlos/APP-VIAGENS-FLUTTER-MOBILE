@@ -35,8 +35,10 @@ class DestinoService with ChangeNotifier {
         body: jsonEncode({
           "id": newId,
           "nome": destino.nome,
+          "descricao": destino.descricao,
           "preco": destino.preco,
           "imagemUrl": destino.imagemUrl,
+          "isFavorite": destino.isFavorite,
         }),
       );
 
@@ -48,6 +50,7 @@ class DestinoService with ChangeNotifier {
           nome: destino.nome,
           preco: destino.preco,
           imagemUrl: destino.imagemUrl,
+          isFavorite: destino.isFavorite,
         ));
         notifyListeners();
       } else {
@@ -68,8 +71,10 @@ class DestinoService with ChangeNotifier {
         body: jsonEncode({
           "id": destino.id,
           "nome": destino.nome,
+          "descricao": destino.descricao,
           "preco": destino.preco,
           "imagemUrl": destino.imagemUrl,
+          "isFavorite": destino.isFavorite,
         }),
       );
       destinos[index] = destino;
