@@ -1,9 +1,6 @@
-import 'package:My_App/service/usuario_service.dart';
+import 'package:My_App/components/destino_grid_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'package:My_App/components/destiny_grid.dart';
-import 'package:My_App/components/drawer.dart';
 
 import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/model/destino.dart';
@@ -33,9 +30,8 @@ class TelaEditarDestino extends StatelessWidget {
           ),
         ],
       ),
-      drawer: UsuarioDrawer(usuario: usuario),
       backgroundColor: Colors.deepPurple,
-      body: DestinoGrid(usuario: usuario,),
+      body: DestinoGridEdit(usuario: usuario,),
     );
   }
 }

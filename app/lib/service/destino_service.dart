@@ -59,33 +59,79 @@ class DestinoService with ChangeNotifier {
     }
   }
 
-  Future<void> updateDestino(Destino destino) async {
-    int index = destinos.indexWhere((p) => p.id == destino.id);
+  Future<MapEntry<String, dynamic>?> _getFirebaseDestinyId(int destinyId) async {
+    final url = Uri.parse('$baseUrl/destinos.json');
+    final response = await http.get(url);
 
-    if (index >= 0) {
-      await http.put(
-        Uri.parse('$baseUrl/destinos/${destino.id}.json'),
-        body: jsonEncode({
-          "id": destino.id,
-          "nome": destino.nome,
-          "descricao": destino.descricao,
-          "preco": destino.preco,
-          "imagemUrl": destino.imagemUrl,
-          "isFavorite": destino.isFavorite,
-        }),
+    if (response.statusCode == 200) {
+      final responseBody = json.decode(response.body) as Map<String, dynamic>;
+      final userEntry = responseBody.entries.firstWhere(
+        (entry) => entry.value['id'] == destinyId,
+        orElse: () => MapEntry<String, dynamic>('not_found', null),
       );
-      destinos[index] = destino;
-      notifyListeners();
+
+      if (userEntry.key != 'not_found') {
+        return userEntry;
+      }
+    } else {
+      throw Exception('Falha ao carregar destinos do Firebase: ${response.statusCode}');
     }
+
+    return null;
   }
 
-  Future<void> removeUser(Destino destino) async {
-    int index = destinos.indexWhere((p) => p.id == destino.id);
+  Future<void> updateDestiny(Destino destino) async {
+    try {
+      // Find the Firebase ID
+      final userEntry = await _getFirebaseDestinyId(destino.id);
+      if (userEntry != null) {
+        final firebaseId = userEntry.key;
 
-    if (index >= 0) {
-      await http.delete(Uri.parse('$baseUrl/destinos/${destino.id}.json'));
-      destinos.removeAt(index);
-      notifyListeners();
+        // Update the user in Firebase
+        final response = await http.patch(
+          Uri.parse('$baseUrl/users/$firebaseId.json'),
+          body: jsonEncode({
+            "id": destino.id,
+            "nome": destino.nome,
+            "descricao": destino.descricao,
+            "preco": destino.preco,
+            "imagemUrl": destino.imagemUrl,
+            "isFavorite": destino.isFavorite,
+          }),
+        );
+
+        if (response.statusCode == 200) {
+          // Update the user in the local list
+          final index = destinos.indexWhere((p) => p.id == destino.id);
+          if (index >= 0) {
+            destinos[index] = destino;
+            notifyListeners();
+          }
+        } else {
+          print('Falha ao atualizar destino: ${response.statusCode}');
+        }
+      } else {
+        print('Destino não encontrado no Firebase.');
+      }
+    } catch (error) {
+      print('Erro ao atualizar destino: $error');
+      throw error;
+    }
+  }
+  
+  Future<void> removeDestiny(Destino destino) async {
+    final userEntry = await _getFirebaseDestinyId(destino.id);
+    if (userEntry != null) {
+      final firebaseId = userEntry.key;
+      int index = destinos.indexWhere((p) => p.id == destino.id);
+
+      if (index >= 0) {
+        await http.delete(Uri.parse('$baseUrl/destinos/$firebaseId.json'));
+        destinos.removeAt(index);
+        notifyListeners();
+      }
+    } else {
+      print('Destino não encontrado no Firebase.');
     }
   }
 
