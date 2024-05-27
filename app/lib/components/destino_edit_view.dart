@@ -1,4 +1,5 @@
 import 'package:My_App/components/destiny_detail_view.dart';
+import 'package:My_App/screens/destino/edicao_destino.dart';
 import 'package:My_App/service/destino_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -47,9 +48,11 @@ class DestinyEditView extends StatelessWidget {
               IconButton(
                 icon: Icon(Icons.edit),
                 onPressed: () {
-                  // Implemente a lógica para editar o local aqui
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Editar local')),
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          EdicaoDestino(destino: destiny, usuario: usuario),
+                    ),
                   );
                 },
               ),
@@ -61,7 +64,8 @@ class DestinyEditView extends StatelessWidget {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: Text('Confirmar remoção'),
-                      content: Text('Tem certeza de que deseja remover este local?'),
+                      content:
+                          Text('Tem certeza de que deseja remover este local?'),
                       actions: [
                         TextButton(
                           onPressed: () {

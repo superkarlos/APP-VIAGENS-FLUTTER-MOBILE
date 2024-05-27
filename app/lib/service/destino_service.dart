@@ -59,7 +59,8 @@ class DestinoService with ChangeNotifier {
     }
   }
 
-  Future<MapEntry<String, dynamic>?> _getFirebaseDestinyId(int destinyId) async {
+  Future<MapEntry<String, dynamic>?> _getFirebaseDestinyId(
+      int destinyId) async {
     final url = Uri.parse('$baseUrl/destinos.json');
     final response = await http.get(url);
 
@@ -74,7 +75,8 @@ class DestinoService with ChangeNotifier {
         return userEntry;
       }
     } else {
-      throw Exception('Falha ao carregar destinos do Firebase: ${response.statusCode}');
+      throw Exception(
+          'Falha ao carregar destinos do Firebase: ${response.statusCode}');
     }
 
     return null;
@@ -89,7 +91,7 @@ class DestinoService with ChangeNotifier {
 
         // Update the user in Firebase
         final response = await http.patch(
-          Uri.parse('$baseUrl/users/$firebaseId.json'),
+          Uri.parse('$baseUrl/destinos/$firebaseId.json'),
           body: jsonEncode({
             "id": destino.id,
             "nome": destino.nome,
@@ -118,7 +120,7 @@ class DestinoService with ChangeNotifier {
       throw error;
     }
   }
-  
+
   Future<void> removeDestiny(Destino destino) async {
     final userEntry = await _getFirebaseDestinyId(destino.id);
     if (userEntry != null) {
