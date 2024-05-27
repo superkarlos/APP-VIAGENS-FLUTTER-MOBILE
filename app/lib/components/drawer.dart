@@ -1,5 +1,6 @@
-import 'package:My_App/screens/destino/destinos_reservados.dart';
+import 'package:My_App/components/destinos_reservados_grid.dart';
 import 'package:My_App/screens/destino/tela_cadastro_destino.dart';
+import 'package:My_App/screens/destino/tela_editar_destino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -100,7 +101,14 @@ class UsuarioDrawer extends StatelessWidget {
           _criarDrawerItem(
             icon: Icons.edit,
             text: 'Editar Destino',
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TelaEditarDestino(usuario: usuario,),
+                ),
+              );
+            },
           ),
           _criarDrawerItem(
             icon: Icons.comment,

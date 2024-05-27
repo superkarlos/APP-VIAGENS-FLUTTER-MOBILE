@@ -1,5 +1,5 @@
 import 'package:My_App/screens/avaliacao/tela_de_avaliacao.dart';
-import 'package:My_App/screens/destino/destiny_detail_page.dart';
+import 'package:My_App/components/destiny_detail_view.dart';
 import 'package:My_App/screens/tela_principal.dart';
 import 'package:My_App/screens/tela_de_cadastro.dart';
 import 'package:My_App/screens/tela_de_login.dart';
