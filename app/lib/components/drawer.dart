@@ -87,7 +87,7 @@ class UsuarioDrawer extends StatelessWidget {
           ),
           _criarDrawerItem(
             icon: Icons.edit,
-            text: 'Cadastrar Destino',
+            text: 'Editar Destino',
             onTap: () {},
           ),
           _criarDrawerItem(
