@@ -116,7 +116,7 @@ class DestinyDetailPage extends StatelessWidget {
                     ),
                     child: Text('Reservar Viagem'),
                   ),
-                  /*SizedBox(width: 50),
+                  SizedBox(width: 50),
                   IconButton(
                     icon: Consumer<Destino>(
                       builder: (context, destiny, child) => Icon(
@@ -128,7 +128,7 @@ class DestinyDetailPage extends StatelessWidget {
                       Provider.of<DestinoService>(context, listen: false).updateFavorites();
                     },
                     color: Theme.of(context).colorScheme.secondary,
-                  ),*/
+                  ),
                 ],
               ),
             ],

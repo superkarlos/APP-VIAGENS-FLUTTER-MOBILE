@@ -58,14 +58,20 @@ class UsuarioDrawer extends StatelessWidget {
             },
           ),
           _criarDrawerItem(
-            icon: Icons.monetization_on_outlined,
-            text: 'Depositar Dinheiro',
-            onTap: () {},
-          ),
-          _criarDrawerItem(
             icon: Icons.card_travel,
             text: 'Viagens Reservadas',
             onTap: () {},
+          ),
+          _criarDrawerItem(
+            icon: Icons.favorite,
+            text: 'Favoritos',
+            onTap: () {
+              /*Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => TelaDeFavoritos(usuario: usuario), // Navega para a tela de favoritos
+                ),
+              );*/
+            },
           ),
           _criarDrawerItem(
             icon: Icons.add_location,
@@ -78,6 +84,11 @@ class UsuarioDrawer extends StatelessWidget {
                 ),
               );
             },
+          ),
+          _criarDrawerItem(
+            icon: Icons.edit,
+            text: 'Cadastrar Destino',
+            onTap: () {},
           ),
           _criarDrawerItem(
             icon: Icons.comment,
