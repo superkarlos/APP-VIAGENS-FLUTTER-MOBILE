@@ -1,14 +1,18 @@
+import 'package:My_App/model/usuario.dart';
 import 'package:My_App/service/destino_service.dart';
+import 'package:My_App/service/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:My_App/model/destino.dart';
 
 class DestinyDetailPage extends StatelessWidget {
-  const DestinyDetailPage({Key? key}) : super(key: key);
-
+  final Usuario usuario;
+  const DestinyDetailPage({Key? key, required this.usuario}) : super(key: key);
+  
   @override
   Widget build(BuildContext context) {
     final destino = Provider.of<Destino>(context);
+    final usuarioService = Provider.of<UsuarioService>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -66,12 +70,6 @@ class DestinyDetailPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              /*Text(
-                'Nota de Avaliaçoes: ${destino.mediaDeNota.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 18.0),
-                textAlign: TextAlign.center,
-              ),*/
-              const SizedBox(height: 20),
               Text(
                 'Preço da passagem: ${destino.preco}',
                 style: const TextStyle(fontSize: 18.0),
@@ -81,6 +79,44 @@ class DestinyDetailPage extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+                  ElevatedButton(
+                    onPressed: () async {
+                      if (usuario.saldo >= destino.preco) {
+                        usuario.saldo -= destino.preco;
+                        usuario.destinos.add(destino);
+
+                        try {
+                          await usuarioService.updateUser(usuario);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Reserva feita com sucesso!'),
+                              backgroundColor: Colors.green,
+                            ),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Erro ao fazer reserva: $e'),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        }
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Saldo insuficiente!'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color.fromARGB(255, 139, 102, 204), // Cor do texto
+                    ),
+                    child: Text('Reservar Viagem'),
+                  ),
+                  /*SizedBox(width: 50),
                   IconButton(
                     icon: Consumer<Destino>(
                       builder: (context, destiny, child) => Icon(
@@ -92,7 +128,7 @@ class DestinyDetailPage extends StatelessWidget {
                       Provider.of<DestinoService>(context, listen: false).updateFavorites();
                     },
                     color: Theme.of(context).colorScheme.secondary,
-                  ),
+                  ),*/
                 ],
               ),
             ],

@@ -36,15 +36,13 @@ class TelaPrincipal extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.exit_to_app),
-            onPressed: () {
-              // Adicione aqui a lógica de sair do app
-            },
+            onPressed: () {},
           ),
         ],
       ),
       drawer: UsuarioDrawer(usuario: usuario),
       backgroundColor: Colors.deepPurple,
-      body: DestinoGrid(),
+      body: DestinoGrid(usuario: usuario,),
     );
   }
 }

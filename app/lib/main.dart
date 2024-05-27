@@ -38,7 +38,6 @@ class MeuApp extends StatelessWidget {
         ),
         home: LoginPage(),
         routes: {
-          AppRoutes.DESTINY_DETAIL: (context) => const DestinyDetailPage(),
           AppRoutes.MAIN_PAGE: (context) => LoginPage(),
           AppRoutes.CADASTRO: (context) => const TelaCadastro(),
         },
