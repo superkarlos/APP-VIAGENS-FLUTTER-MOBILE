@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:My_App/components/view/base_destiny_view.dart';
-import 'package:My_App/components/destiny_detail_view.dart';
+import 'package:My_App/components/view/destiny_detail_view.dart';
 
 class DestinyView extends StatelessWidget {
   final Usuario usuario;

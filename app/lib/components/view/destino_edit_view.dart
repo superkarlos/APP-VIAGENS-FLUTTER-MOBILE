@@ -5,7 +5,7 @@ import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/components/view/base_destiny_view.dart';
-import 'package:My_App/components/destiny_detail_view.dart';
+import 'package:My_App/components/view/destiny_detail_view.dart';
 import 'package:My_App/screens/destino/edicao_destino.dart';
 
 class DestinyEditView extends StatelessWidget {

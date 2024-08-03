@@ -1,4 +1,4 @@
-import 'package:My_App/components/destinos_reservados_grid.dart';
+import 'package:My_App/components/grid/destinos_reservados_grid.dart';
 import 'package:My_App/screens/destino/tela_cadastro_destino.dart';
 import 'package:My_App/screens/destino/tela_editar_destino.dart';
 import 'package:My_App/screens/upload/tela_de_upload.dart';
@@ -69,7 +69,9 @@ class UsuarioDrawer extends StatelessWidget {
                   builder: (context) => Scaffold(
                     appBar: AppBar(
                       title: Text('Viagens Reservadas'),
+                      backgroundColor: Colors.deepPurple,
                     ),
+                    backgroundColor: Colors.deepPurple,
                     body: DestinosReservadosGrid(usuario: usuario),
                   ),
                 ),
