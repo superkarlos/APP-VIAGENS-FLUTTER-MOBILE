@@ -102,7 +102,6 @@ class _TelaCadastroDestinoState extends State<TelaCadastroDestino> {
                           descricao: _descricaoController.text,
                           preco: double.parse(_precoController.text),
                           imagemUrl: _imagemUrlController.text,
-                          isFavorite: false,
                         );
                         Provider.of<DestinoService>(context, listen: false)
                             .addDestino(novoDestino);

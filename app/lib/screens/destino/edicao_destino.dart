@@ -106,7 +106,6 @@ class _EdicaoDestinoState extends State<EdicaoDestino> {
                           imagemUrl: _imagemUrlController.text.isNotEmpty
                               ? _imagemUrlController.text
                               : widget.destino.imagemUrl,
-                          isFavorite: false, // Padrão como false
                         );
                         await Provider.of<DestinoService>(context,
                                 listen: false)

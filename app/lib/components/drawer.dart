@@ -79,17 +79,6 @@ class UsuarioDrawer extends StatelessWidget {
             },
           ),
           _criarDrawerItem(
-            icon: Icons.favorite,
-            text: 'Favoritos',
-            onTap: () {
-              /*Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => TelaDeFavoritos(usuario: usuario), // Navega para a tela de favoritos
-                ),
-              );*/
-            },
-          ),
-          _criarDrawerItem(
             icon: Icons.add_location,
             text: 'Cadastrar Destino',
             onTap: () {

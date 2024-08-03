@@ -35,7 +35,6 @@ class DestinoService with ChangeNotifier {
           "descricao": destino.descricao,
           "preco": destino.preco,
           "imagemUrl": destino.imagemUrl,
-          "isFavorite": destino.isFavorite,
         }),
       );
 
@@ -47,7 +46,6 @@ class DestinoService with ChangeNotifier {
           nome: destino.nome,
           preco: destino.preco,
           imagemUrl: destino.imagemUrl,
-          isFavorite: destino.isFavorite,
         ));
         notifyListeners();
       } else {
@@ -98,7 +96,6 @@ class DestinoService with ChangeNotifier {
             "descricao": destino.descricao,
             "preco": destino.preco,
             "imagemUrl": destino.imagemUrl,
-            "isFavorite": destino.isFavorite,
           }),
         );
 

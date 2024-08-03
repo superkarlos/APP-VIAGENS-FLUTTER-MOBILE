@@ -75,24 +75,6 @@ class DestinyReservedDetailPage extends StatelessWidget {
                 style: const TextStyle(fontSize: 18.0),
                 textAlign: TextAlign.left,
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  IconButton(
-                    icon: Consumer<Destino>(
-                      builder: (context, destiny, child) => Icon(
-                        destiny.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      ),
-                    ),
-                    onPressed: () {
-                      destino.toggleFavorite();
-                      Provider.of<DestinoService>(context, listen: false).updateFavorites();
-                    },
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
-                ],
-              ),
             ],
           ),
         ),

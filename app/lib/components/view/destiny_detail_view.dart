@@ -1,4 +1,5 @@
 import 'package:My_App/model/usuario.dart';
+import 'package:My_App/screens/tela_principal.dart';
 import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/service/usuario_service.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,11 @@ class DestinyDetailPage extends StatelessWidget {
 
                         try {
                           await usuarioService.updateUser(usuario);
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => TelaPrincipal(userId: usuario.id),
+                            ),
+                          );
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Reserva feita com sucesso!'),
@@ -115,19 +121,6 @@ class DestinyDetailPage extends StatelessWidget {
                       backgroundColor: Color.fromARGB(255, 139, 102, 204), // Cor do texto
                     ),
                     child: Text('Reservar Viagem'),
-                  ),
-                  SizedBox(width: 50),
-                  IconButton(
-                    icon: Consumer<Destino>(
-                      builder: (context, destiny, child) => Icon(
-                        destiny.isFavorite ? Icons.favorite : Icons.favorite_border,
-                      ),
-                    ),
-                    onPressed: () {
-                      destino.toggleFavorite();
-                      Provider.of<DestinoService>(context, listen: false).updateFavorites();
-                    },
-                    color: Theme.of(context).colorScheme.secondary,
                   ),
                 ],
               ),

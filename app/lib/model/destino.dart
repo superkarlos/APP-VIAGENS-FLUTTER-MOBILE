@@ -6,7 +6,6 @@ class Destino with ChangeNotifier {
   final String descricao;
   final double preco;
   final String imagemUrl;
-  bool isFavorite;
 
   Destino({
     required this.id,
@@ -14,13 +13,7 @@ class Destino with ChangeNotifier {
     required this.descricao,
     required this.preco,
     required this.imagemUrl,
-    this.isFavorite = false,
   });
-
-  void toggleFavorite() {
-    isFavorite = !isFavorite;
-    notifyListeners();
-  }
 
   factory Destino.fromJson(Map<String, dynamic> json) {
     return Destino(
@@ -29,7 +22,6 @@ class Destino with ChangeNotifier {
       descricao: json['descricao'] ?? '',
       preco: (json['preco'] ?? 0.0).toDouble(),
       imagemUrl: json['imagemUrl'] ?? '',
-      isFavorite: json['isFavorite'] ?? false,
     );
   }
 
@@ -40,7 +32,6 @@ class Destino with ChangeNotifier {
       "descricao": descricao,
       "preco": preco,
       "imagemUrl": imagemUrl,
-      "isFavorite": isFavorite,
     };
   }
 }
