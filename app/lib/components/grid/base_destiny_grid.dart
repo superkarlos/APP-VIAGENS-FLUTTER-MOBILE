@@ -5,11 +5,15 @@ import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
 
-import 'package:My_App/components/destiny_view.dart';
-
-class DestinoGrid extends StatelessWidget {
+class BaseDestinoGrid extends StatelessWidget {
   final Usuario usuario;
-  const DestinoGrid({Key? key, required this.usuario}) : super(key: key);
+  final Widget Function(BuildContext, Destino) itemBuilder;
+
+  const BaseDestinoGrid({
+    Key? key,
+    required this.usuario,
+    required this.itemBuilder,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,20 +24,16 @@ class DestinoGrid extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: provider.updateNotifier,
       builder: (ctx, value, _) {
-        final List<Destino> loadedDestinations = provider.items;
         return GridView.builder(
           padding: const EdgeInsets.all(10),
           itemCount: loadedDestinations.length,
-          //# ProductItem vai receber a partir do Provider
           itemBuilder: (ctx, i) => ChangeNotifierProvider.value(
-            //create: (ctx) => Product(),
             value: loadedDestinations[i],
-            //child: ProductItem(product: loadedDestinations[i]),
-            child: DestinyView(usuario: usuario,),
+            child: itemBuilder(ctx, loadedDestinations[i]),
           ),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1, //2 produtos por linha
-            childAspectRatio: 2 / 1, //diemnsao de cada elemento
+            crossAxisCount: 1,
+            childAspectRatio: 2 / 1,
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
           ),

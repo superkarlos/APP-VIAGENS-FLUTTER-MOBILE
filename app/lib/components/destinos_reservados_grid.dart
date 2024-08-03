@@ -5,7 +5,7 @@ import 'package:My_App/service/destino_service.dart';
 import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
 
-import 'package:My_App/components/destiny_view.dart';
+import 'package:My_App/components/view/destiny_view.dart';
 
 class DestinosReservadosGrid extends StatelessWidget {
   final Usuario usuario;

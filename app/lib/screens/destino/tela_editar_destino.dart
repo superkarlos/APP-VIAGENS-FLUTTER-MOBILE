@@ -1,4 +1,4 @@
-import 'package:My_App/components/destino_grid_edit.dart';
+import 'package:My_App/components/grid/destino_grid_edit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +20,7 @@ class TelaEditarDestino extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.deepPurple,
         title: const Text(
-          'Destinos Cadastradas',
+          'Destinos Cadastrados',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: <Widget>[

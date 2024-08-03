@@ -2,7 +2,7 @@ import 'package:My_App/service/usuario_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:My_App/components/destiny_grid.dart';
+import 'package:My_App/components/grid/destiny_grid.dart';
 import 'package:My_App/components/drawer.dart';
 
 import 'package:My_App/service/destino_service.dart';
