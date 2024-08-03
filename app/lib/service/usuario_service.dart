@@ -1,11 +1,16 @@
+import 'dart:io';
 import 'dart:convert';
 
-import 'package:My_App/model/usuario.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:My_App/model/usuario.dart';
 
 class UsuarioService with ChangeNotifier {
   final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Usuario> _usuarios = [];
 
@@ -17,7 +22,7 @@ class UsuarioService with ChangeNotifier {
   Future<void> addUser(Usuario usuario) async {
     try {
       await fetchUsers();
-      final int lastId = _usuarios.isNotEmpty ? _usuarios.last.id ?? 0 : 0;
+      final int lastId = _usuarios.isNotEmpty ? _usuarios.last.id : 0;
       final newId = (lastId + 1);
 
       final response = await http.post(
@@ -30,6 +35,7 @@ class UsuarioService with ChangeNotifier {
           "saldo": usuario.saldo,
           "destinos": usuario.destinos,
           "fotos": usuario.fotos,
+          "imagemPerfil": usuario.imagemPerfil,
         }),
       );
 
@@ -69,12 +75,10 @@ class UsuarioService with ChangeNotifier {
 
   Future<void> updateUser(Usuario usuario) async {
     try {
-      // Find the Firebase ID
       final userEntry = await _getFirebaseUserId(usuario.id);
       if (userEntry != null) {
         final firebaseId = userEntry.key;
 
-        // Update the user in Firebase
         final response = await http.patch(
           Uri.parse('$baseUrl/users/$firebaseId.json'),
           body: jsonEncode({
@@ -85,11 +89,11 @@ class UsuarioService with ChangeNotifier {
             "saldo": usuario.saldo,
             "destinos": usuario.destinos,
             "fotos": usuario.fotos,
+            "imagemPerfil": usuario.imagemPerfil,
           }),
         );
 
         if (response.statusCode == 200) {
-          // Update the user in the local list
           final index = _usuarios.indexWhere((p) => p.id == usuario.id);
           if (index >= 0) {
             _usuarios[index] = usuario;
@@ -106,7 +110,7 @@ class UsuarioService with ChangeNotifier {
       throw error;
     }
   }
-  
+
   Future<void> removeUser(Usuario usuario) async {
     final userEntry = await _getFirebaseUserId(usuario.id);
     if (userEntry != null) {
@@ -152,6 +156,20 @@ class UsuarioService with ChangeNotifier {
       }
     } catch (error) {
       print('Erro ao carregar usuários: $error');
+      throw error;
+    }
+  }
+
+  Future<void> uploadProfileImage(File image, Usuario usuario) async {
+    try {
+      final ref = _storage.ref().child('profile_images/${usuario.id}.jpg');
+      await ref.putFile(image);
+      final imageUrl = await ref.getDownloadURL();
+
+      usuario.imagemPerfil = imageUrl;
+      await updateUser(usuario);
+    } catch (error) {
+      print('Erro ao fazer upload da imagem de perfil: $error');
       throw error;
     }
   }

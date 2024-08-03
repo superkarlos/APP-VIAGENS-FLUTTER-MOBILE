@@ -10,6 +10,7 @@ class Usuario with ChangeNotifier {
   double saldo;
   List<Destino> destinos;
   List<Foto> fotos;
+  String? imagemPerfil;
 
   Usuario({
     required this.id,
@@ -19,6 +20,7 @@ class Usuario with ChangeNotifier {
     required this.saldo,
     required this.destinos,
     required this.fotos,
+    this.imagemPerfil,
   });
 
   factory Usuario.fromJson(Map<String, dynamic> json) {
@@ -36,6 +38,7 @@ class Usuario with ChangeNotifier {
               ?.map((item) => Foto.fromJson(item as Map<String, dynamic>))
               .toList() ??
           [],
+      imagemPerfil: json['imagemPerfil'] as String?,
     );
   }
 
@@ -48,6 +51,7 @@ class Usuario with ChangeNotifier {
       'saldo': saldo ?? 0.0, // Trata o valor nulo como 0.0
       'destinos': destinos?.map((destino) => destino.toJson()).toList() ?? [],
       'fotos': fotos?.map((foto) => foto.toJson()).toList() ?? [],
+      'imagemPerfil': imagemPerfil,
     };
   }
 

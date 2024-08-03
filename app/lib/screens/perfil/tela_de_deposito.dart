@@ -1,3 +1,4 @@
+import 'package:My_App/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +63,11 @@ class _TelaDepositoPageState extends State<TelaDepositoPage> {
             ElevatedButton(
               onPressed: () {
                 _depositarDinheiro(_valorDepositado);
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TelaPrincipal(userId: widget.usuario.id),
+                  ),
+                );
               },
               child: const Text('Depositar'),
             ),

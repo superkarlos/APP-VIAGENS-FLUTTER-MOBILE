@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:My_App/screens/perfil/tela_de_deposito.dart';
 import 'package:My_App/screens/perfil/tela_editar_usuario.dart';
 import 'package:My_App/screens/tela_de_login.dart';
@@ -13,7 +15,6 @@ class TelaDePerfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final usuarioService = Provider.of<UsuarioService>(context, listen: false);
 
     return Scaffold(
@@ -28,7 +29,9 @@ class TelaDePerfil extends StatelessWidget {
             children: <Widget>[
               CircleAvatar(
                 radius: 60,
-                backgroundImage: AssetImage('assets/images/pngwing.com.png'),
+                backgroundImage: usuario.imagemPerfil != null
+                    ? FileImage(File(usuario.imagemPerfil!))
+                    : AssetImage('assets/images/pngwing.com.png') as ImageProvider,
               ),
               SizedBox(height: 16),
               Text(
@@ -48,45 +51,40 @@ class TelaDePerfil extends StatelessWidget {
                       builder: (context) => TelaDepositoPage(usuario: usuario),
                     ),
                   );
-                  if(novoSaldo != null){
+                  if (novoSaldo != null) {
                     usuarioService.updateUser(usuario);
                   }
                 },
                 child: Text('Depositar Saldo'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor:
-                      Colors.blue, // Define a cor do texto do botão
+                  backgroundColor: Colors.blue,
                   shape: RoundedRectangleBorder(
-                    // Define a forma do botão
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12), // Define o padding do botão
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
               ),
               SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).push(
+                onPressed: () async {
+                  final atualizado = await Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => TelaEditarUsuario(usuario: usuario),
                     ),
                   );
+                  if (atualizado == true) {
+                    usuarioService.updateUser(usuario);
+                  }
                 },
                 child: Text('Editar Informações'),
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white,
-                  backgroundColor:
-                      Colors.green, // Define a cor do texto do botão
+                  backgroundColor: Colors.green,
                   shape: RoundedRectangleBorder(
-                    // Define a forma do botão
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12), // Define o padding do botão
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
               ),
               SizedBox(height: 16),
@@ -106,10 +104,7 @@ class TelaDePerfil extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 24,
-                    vertical: 12,
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
               ),
             ],

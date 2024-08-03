@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:My_App/screens/tela_principal.dart';
 import 'package:flutter/material.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:My_App/service/usuario_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class TelaEditarUsuario extends StatefulWidget {
@@ -19,6 +22,8 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
   final _nomeController = TextEditingController();
   final _usuarioController = TextEditingController();
   final _senhaController = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  String? _imagemPerfil;
 
   @override
   void initState() {
@@ -26,6 +31,16 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
     _nomeController.text = widget.usuario.nome;
     _usuarioController.text = widget.usuario.usuario;
     _senhaController.text = widget.usuario.senha;
+    _imagemPerfil = widget.usuario.imagemPerfil;
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+    if(pickedFile != null){
+      setState(() {
+        _imagemPerfil = pickedFile.path;
+      });
+    }
   }
 
   @override
@@ -42,6 +57,45 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Center(
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: _imagemPerfil != null ? FileImage(File(_imagemPerfil!)) : AssetImage('assets/images/pngwing.com.png') as ImageProvider,
+                      ),
+                      Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: IconButton(
+                          icon: Icon(Icons.camera_alt),
+                          onPressed: () async {
+                            final action = await showDialog<ImageSource>(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('Selecionar imagem'),
+                                content: Text('Escolha a origem da imagem:'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, ImageSource.camera),
+                                    child: Text('Câmera'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context, ImageSource.gallery),
+                                    child: Text('Galeria'),
+                                  ),
+                                ],
+                              )
+                            );
+                            if(action != null){
+                              await _pickImage(action);
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 TextFormField(
                   controller: _nomeController,
                   decoration: InputDecoration(labelText: 'Nome'),
@@ -92,6 +146,7 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
                           saldo: widget.usuario.saldo,
                           destinos: widget.usuario.destinos,
                           fotos: widget.usuario.fotos,
+                          imagemPerfil: _imagemPerfil,
                         );
                         await Provider.of<UsuarioService>(context,
                                 listen: false)
