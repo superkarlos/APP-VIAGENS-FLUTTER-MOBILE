@@ -1,3 +1,4 @@
+import 'package:My_App/screens/perfil/tela_de_deposito.dart';
 import 'package:My_App/screens/perfil/tela_editar_usuario.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/service/usuario_service.dart';
@@ -38,6 +39,32 @@ class TelaDePerfil extends StatelessWidget {
               Text(
                 'Saldo: \$${usuario.saldo.toStringAsFixed(2)}',
                 style: TextStyle(fontSize: 18, color: Colors.grey[700]),
+              ),
+              SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () async {
+                  final novoSaldo = await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => TelaDepositoPage(usuario: usuario),
+                    ),
+                  );
+                  if(novoSaldo != null){
+                    usuarioService.updateUser(usuario);
+                  }
+                },
+                child: Text('Depositar Saldo'),
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor:
+                      Colors.blue, // Define a cor do texto do botão
+                  shape: RoundedRectangleBorder(
+                    // Define a forma do botão
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12), // Define o padding do botão
+                ),
               ),
               SizedBox(height: 16),
               ElevatedButton(

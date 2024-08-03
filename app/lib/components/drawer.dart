@@ -1,6 +1,7 @@
 import 'package:My_App/components/destinos_reservados_grid.dart';
 import 'package:My_App/screens/destino/tela_cadastro_destino.dart';
 import 'package:My_App/screens/destino/tela_editar_destino.dart';
+import 'package:My_App/screens/upload/tela_de_upload.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -124,7 +125,13 @@ class UsuarioDrawer extends StatelessWidget {
           _criarDrawerItem(
             icon: Icons.image,
             text: 'Upload de fotos',
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => UploadPhotoScreen(),
+                ),
+              );
+            },
           ),
           _criarDrawerItem(
             icon: Icons.settings,

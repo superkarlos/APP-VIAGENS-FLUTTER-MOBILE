@@ -24,10 +24,10 @@ class Usuario with ChangeNotifier {
   factory Usuario.fromJson(Map<String, dynamic> json) {
     return Usuario(
       id: json['id'] as int,
-      nome: json['nome'] as String,
-      usuario: json['usuario'] as String,
-      senha: json['senha'] as String,
-      saldo: (json['saldo'] as num).toDouble(),
+      nome: json['nome'] != null ? json['nome'] as String : '',
+      usuario: json['usuario'] != null ? json['usuario'] as String : '',
+      senha: json['senha'] != null ? json['senha'] as String : '',
+      saldo: (json['saldo'] as num?)?.toDouble() ?? 0.0,
       destinos: (json['destinos'] as List<dynamic>?)
               ?.map((item) => Destino.fromJson(item as Map<String, dynamic>))
               .toList() ??
@@ -42,12 +42,17 @@ class Usuario with ChangeNotifier {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'nome': nome,
-      'usuario': usuario,
-      'senha': senha,
-      'saldo': saldo,
-      'destinos': destinos.map((destino) => destino.toJson()).toList(),
-      'fotos': fotos.map((foto) => foto.toJson()).toList(),
+      'nome': nome ?? '', // Trata o valor nulo como uma string vazia
+      'usuario': usuario ?? '', // Trata o valor nulo como uma string vazia
+      'senha': senha ?? '', // Trata o valor nulo como uma string vazia
+      'saldo': saldo ?? 0.0, // Trata o valor nulo como 0.0
+      'destinos': destinos?.map((destino) => destino.toJson()).toList() ?? [],
+      'fotos': fotos?.map((foto) => foto.toJson()).toList() ?? [],
     };
+  }
+
+  void depositar(double valor){
+    saldo += valor;
+    notifyListeners();
   }
 }

@@ -6,6 +6,8 @@ import '../../service/avaliacao_service.dart';
 import '../../service/destino_service.dart';
 import '../../service/usuario_service.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class AvaliacaoPage extends StatefulWidget {
   final Usuario usuario;
@@ -18,14 +20,25 @@ class AvaliacaoPage extends StatefulWidget {
 
 class _AvaliacaoPageState extends State<AvaliacaoPage> {
   final TextEditingController _comentarioController = TextEditingController();
-
   Destino? _destinoSelecionado;
+  File? _imagem;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     Provider.of<UsuarioService>(context, listen: false).fetchUsers();
     Provider.of<DestinoService>(context, listen: false).fetchDestinos();
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
+
+    if(pickedFile != null){
+      setState(() {
+        _imagem = File(pickedFile.path);
+      });
+    }
   }
 
   @override

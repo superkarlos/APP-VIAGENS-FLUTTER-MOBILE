@@ -5,7 +5,7 @@ import 'package:My_App/screens/tela_de_cadastro.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/service/avaliacao_service.dart';
 import 'package:My_App/service/destino_service.dart';
-import 'package:My_App/service/usuario_service.dart'; // Importe o UsuarioService
+import 'package:My_App/service/usuario_service.dart';
 import 'package:My_App/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'firebase_option.dart';
