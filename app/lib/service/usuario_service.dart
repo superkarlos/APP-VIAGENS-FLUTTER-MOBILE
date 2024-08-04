@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,6 +14,11 @@ class UsuarioService with ChangeNotifier {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Usuario> _usuarios = [];
+  bool uploading = false;
+  bool loadingImage = false;
+  double total = 0;
+  Reference? lastUploadedRef;
+  String? lastUploadedImageUrl;
 
   Future<List<Usuario>> get items async {
     await fetchUsers();
@@ -183,5 +189,54 @@ class UsuarioService with ChangeNotifier {
             saldo: 0.0,
             destinos: [],
             fotos: []); // Retornando usuário vazio com id 0
+  }
+
+  Future<void> loadLastImage(int userId) async {
+    loadingImage = true;
+    notifyListeners();
+    try {
+      var refs = (await _storage.ref('profile-images/$userId').listAll()).items;
+      if (refs.isNotEmpty) {
+        lastUploadedRef = refs.last;
+        lastUploadedImageUrl = await lastUploadedRef!.getDownloadURL();
+      } else {
+        lastUploadedImageUrl = null;
+      }
+    } finally {
+      loadingImage = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> pickAndUploadImage(ImageSource source, int userId) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? file = await _picker.pickImage(source: source);
+    if (file != null) {
+      File imageFile = File(file.path);
+      String ref = 'profile-images/$userId/img-${DateTime.now().toString()}.jpg';
+      UploadTask task = _storage.ref(ref).putFile(imageFile);
+
+      task.snapshotEvents.listen((TaskSnapshot snapshot) async {
+        if (snapshot.state == TaskState.running) {
+          uploading = true;
+          total = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          notifyListeners();
+        } else if (snapshot.state == TaskState.success) {
+          lastUploadedRef = snapshot.ref;
+          lastUploadedImageUrl = await lastUploadedRef!.getDownloadURL();
+          uploading = false;
+          notifyListeners();
+        }
+      });
+    }
+  }
+
+  Future<void> deleteImage() async {
+    if (lastUploadedRef != null) {
+      await _storage.ref(lastUploadedRef!.fullPath).delete();
+      lastUploadedRef = null;
+      lastUploadedImageUrl = null;
+      notifyListeners();
+    }
   }
 }
