@@ -34,7 +34,6 @@ class UsuarioService with ChangeNotifier {
           "senha": usuario.senha,
           "saldo": usuario.saldo,
           "destinos": usuario.destinos,
-          "fotos": usuario.fotos,
           "imagemPerfil": usuario.imagemPerfil,
         }),
       );
@@ -88,7 +87,6 @@ class UsuarioService with ChangeNotifier {
             "senha": usuario.senha,
             "saldo": usuario.saldo,
             "destinos": usuario.destinos,
-            "fotos": usuario.fotos,
             "imagemPerfil": usuario.imagemPerfil,
           }),
         );
@@ -156,20 +154,6 @@ class UsuarioService with ChangeNotifier {
       }
     } catch (error) {
       print('Erro ao carregar usuários: $error');
-      throw error;
-    }
-  }
-
-  Future<void> uploadProfileImage(File image, Usuario usuario) async {
-    try {
-      final ref = _storage.ref().child('profile_images/${usuario.id}.jpg');
-      await ref.putFile(image);
-      final imageUrl = await ref.getDownloadURL();
-
-      usuario.imagemPerfil = imageUrl;
-      await updateUser(usuario);
-    } catch (error) {
-      print('Erro ao fazer upload da imagem de perfil: $error');
       throw error;
     }
   }

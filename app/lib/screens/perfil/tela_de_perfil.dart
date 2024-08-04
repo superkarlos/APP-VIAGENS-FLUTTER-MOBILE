@@ -30,7 +30,7 @@ class TelaDePerfil extends StatelessWidget {
               CircleAvatar(
                 radius: 60,
                 backgroundImage: usuario.imagemPerfil != null
-                    ? FileImage(File(usuario.imagemPerfil!))
+                    ? NetworkImage(usuario.imagemPerfil!)
                     : AssetImage('assets/images/pngwing.com.png') as ImageProvider,
               ),
               SizedBox(height: 16),

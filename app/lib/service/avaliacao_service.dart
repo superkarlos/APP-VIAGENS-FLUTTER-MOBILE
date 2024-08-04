@@ -23,7 +23,7 @@ class AvaliacaoService with ChangeNotifier {
         Uri.parse('$baseUrl/avaliacoes.json'),
         body: jsonEncode({
           'id': newId,
-          'usuario_id': avaliacao.usuario_id,
+          'usuario_nome': avaliacao.usuario_nome,
           'destino_id': avaliacao.destino_id,
           'avaliacao': avaliacao.avaliacao,
         }),
@@ -32,7 +32,7 @@ class AvaliacaoService with ChangeNotifier {
       if (response.statusCode == 200) {
         _avaliacoes.add(Avaliacao(
           id: newId,
-          usuario_id: avaliacao.usuario_id,
+          usuario_nome: avaliacao.usuario_nome,
           destino_id: avaliacao.destino_id,
           avaliacao: avaliacao.avaliacao,
         ));
@@ -54,7 +54,7 @@ class AvaliacaoService with ChangeNotifier {
         Uri.parse('$baseUrl/avaliacoes/${avaliacao.id}.json'),
         body: jsonEncode({
           'id': avaliacao.id,
-          'usuario_id': avaliacao.usuario_id,
+          'usuario_nome': avaliacao.usuario_nome,
           'destino_id': avaliacao.destino_id,
           'avaliacao': avaliacao.avaliacao,
         }),

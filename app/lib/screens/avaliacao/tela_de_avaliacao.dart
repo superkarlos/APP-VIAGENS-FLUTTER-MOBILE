@@ -21,7 +21,7 @@ class AvaliacaoPage extends StatefulWidget {
 class _AvaliacaoPageState extends State<AvaliacaoPage> {
   final TextEditingController _comentarioController = TextEditingController();
   Destino? _destinoSelecionado;
-  File? _imagem;
+  List<File> _imagens = [];
   final ImagePicker _picker = ImagePicker();
 
   @override
@@ -34,9 +34,9 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
 
-    if(pickedFile != null){
+    if (pickedFile != null) {
       setState(() {
-        _imagem = File(pickedFile.path);
+        _imagens.add(File(pickedFile.path));
       });
     }
   }
@@ -53,13 +53,17 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
       body: ListView.builder(
         itemCount: avaliacoes.length,
         itemBuilder: (context, index) {
+          final avaliacao = avaliacoes[index];
+          final destino = destinosDisponiveis.firstWhere((destino) => destino.id == avaliacao.destino_id);
           return ListTile(
-            title: Text('Local: ${destinosDisponiveis.firstWhere((destino) => destino.id == avaliacoes[index].destino_id).nome}'),
+            title: Text('Local: ${destino.nome}'),
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Usuário: ${avaliacoes[index].usuario_id}'),
-                Text('Comentário: ${avaliacoes[index].avaliacao}'),
+                Text('Usuário: ${avaliacao.usuario_nome}'),
+                Text('Comentário: ${avaliacao.avaliacao}'),
+                if (avaliacao.foto_urls != null)
+                  ...avaliacao.foto_urls!.map((url) => Image.network(url)).toList(),
               ],
             ),
           );
@@ -106,6 +110,54 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                   controller: _comentarioController,
                   decoration: InputDecoration(labelText: 'Seu comentário'),
                 ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: () {
+                        _pickImage(ImageSource.camera);
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.photo_library),
+                      onPressed: () {
+                        _pickImage(ImageSource.gallery);
+                      },
+                    ),
+                  ],
+                ),
+                if (_imagens.isNotEmpty)
+                  Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: _imagens.map((imagem) {
+                      return Stack(
+                        children: [
+                          Image.file(
+                            imagem,
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
+                          ),
+                          Positioned(
+                            right: 0,
+                            child: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _imagens.remove(imagem);
+                                });
+                              },
+                              child: Icon(
+                                Icons.remove_circle,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                  ),
               ],
             ),
           ),
@@ -121,18 +173,18 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                 if (_destinoSelecionado != null && _comentarioController.text.isNotEmpty) {
                   Avaliacao novaAvaliacao = Avaliacao(
                     id: 0, // Será substituído pelo ID gerado no servidor
-                    usuario_id: widget.usuario.id,
+                    usuario_nome: widget.usuario.nome,
                     destino_id: _destinoSelecionado!.id!,
                     avaliacao: _comentarioController.text,
                   );
 
                   try {
-                    await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(novaAvaliacao);
+                    //await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(novaAvaliacao, _imagens);
 
                     setState(() {
-                      Provider.of<AvaliacaoService>(context, listen: false).avaliacoes.add(novaAvaliacao);
                       _destinoSelecionado = null;
-                      _comentarioController.text = '';
+                      _comentarioController.clear();
+                      _imagens.clear();
                     });
 
                     Navigator.of(context).pop();
