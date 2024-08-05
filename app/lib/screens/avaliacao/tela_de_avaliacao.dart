@@ -119,7 +119,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                   );
 
                   try {
-                    await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(novaAvaliacao);
+                    await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(context, novaAvaliacao);
 
                     setState(() {
                       _destinoSelecionado = null;

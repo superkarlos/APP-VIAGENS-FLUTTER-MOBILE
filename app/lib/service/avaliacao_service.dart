@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:My_App/service/destino_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:My_App/model/avaliacao.dart';
+import 'package:provider/provider.dart';
 
 class AvaliacaoService with ChangeNotifier {
   final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
@@ -13,7 +15,7 @@ class AvaliacaoService with ChangeNotifier {
     return [..._avaliacoes];
   }
 
-  Future<void> addAvaliacao(Avaliacao avaliacao) async {
+  Future<void> addAvaliacao(BuildContext context, Avaliacao avaliacao) async {
     try {
       fetchAvaliacoes();
       final int lastId = _avaliacoes.isNotEmpty ? _avaliacoes.last.id : 0;
@@ -27,6 +29,7 @@ class AvaliacaoService with ChangeNotifier {
           'usuario_nome': avaliacao.usuario_nome,
           'destino_id': avaliacao.destino_id,
           'avaliacao': avaliacao.avaliacao,
+          'foto_urls': avaliacao.foto_urls,
         }),
       );
 
@@ -37,8 +40,21 @@ class AvaliacaoService with ChangeNotifier {
           usuario_nome: avaliacao.usuario_nome,
           destino_id: avaliacao.destino_id,
           avaliacao: avaliacao.avaliacao,
+          foto_urls: avaliacao.foto_urls,
         ));
         notifyListeners();
+
+        await Provider.of<DestinoService>(context, listen: false).addAvaliacaoAoDestino(
+          avaliacao.destino_id,
+          Avaliacao(
+            id: newId,
+            usuarioId: avaliacao.usuarioId,
+            usuario_nome: avaliacao.usuario_nome,
+            destino_id: avaliacao.destino_id,
+            avaliacao: avaliacao.avaliacao,
+            foto_urls: avaliacao.foto_urls,
+          )
+        );
       } else {
         print('Falha ao adicionar avaliação: ${response.statusCode}');
       }

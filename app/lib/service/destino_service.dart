@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:My_App/model/avaliacao.dart';
 import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
 import 'package:flutter/material.dart';
@@ -161,6 +162,38 @@ class DestinoService with ChangeNotifier {
       }
     } catch (error) {
       print('Erro ao carregar destinos: $error');
+      throw error;
+    }
+  }
+
+  Future<void> addAvaliacaoAoDestino(int destinoId, Avaliacao avaliacao) async {
+    try {
+      final userEntry = await _getFirebaseDestinyId(destinoId);
+      if (userEntry != null) {
+        final firebaseId = userEntry.key;
+
+        final destino = Destino.fromJson(userEntry.value);
+        destino.avaliacoes.add(avaliacao);
+
+        final response = await http.patch(
+          Uri.parse('$baseUrl/destinos/$firebaseId.json'),
+          body: jsonEncode(destino.toJson()),
+        );
+
+        if (response.statusCode == 200) {
+          final index = destinos.indexWhere((d) => d.id == destinoId);
+          if (index >= 0) {
+            destinos[index] = destino;
+            notifyListeners();
+          }
+        } else {
+          print('Falha ao atualizar destino: ${response.statusCode}');
+        }
+      } else {
+        print('Destino não encontrado no Firebase.');
+      }
+    } catch (error) {
+      print('Erro ao adicionar avaliação ao destino: $error');
       throw error;
     }
   }

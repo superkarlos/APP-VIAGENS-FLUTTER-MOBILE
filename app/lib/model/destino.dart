@@ -1,3 +1,4 @@
+import 'package:My_App/model/avaliacao.dart';
 import 'package:flutter/material.dart';
 
 class Destino with ChangeNotifier {
@@ -6,6 +7,7 @@ class Destino with ChangeNotifier {
   final String descricao;
   final double preco;
   final String imagemUrl;
+  final List<Avaliacao> avaliacoes;
 
   Destino({
     required this.id,
@@ -13,6 +15,7 @@ class Destino with ChangeNotifier {
     required this.descricao,
     required this.preco,
     required this.imagemUrl,
+    this.avaliacoes = const [],
   });
 
   factory Destino.fromJson(Map<String, dynamic> json) {
@@ -22,6 +25,7 @@ class Destino with ChangeNotifier {
       descricao: json['descricao'] ?? '',
       preco: (json['preco'] ?? 0.0).toDouble(),
       imagemUrl: json['imagemUrl'] ?? '',
+      avaliacoes: (json['avaliacoes'] as List<dynamic>?)?.map((avaliacaoJson) => Avaliacao.fromJson(avaliacaoJson)).toList() ??[],
     );
   }
 
@@ -32,6 +36,7 @@ class Destino with ChangeNotifier {
       "descricao": descricao,
       "preco": preco,
       "imagemUrl": imagemUrl,
+      "avaliacoes": avaliacoes.map((avaliacao) => avaliacao.toJson()).toList(),
     };
   }
 }
