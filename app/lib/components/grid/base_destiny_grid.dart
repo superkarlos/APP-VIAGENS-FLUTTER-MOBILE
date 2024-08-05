@@ -10,10 +10,10 @@ class BaseDestinoGrid extends StatelessWidget {
   final Widget Function(BuildContext, Destino) itemBuilder;
 
   const BaseDestinoGrid({
-    Key? key,
+    super.key,
     required this.usuario,
     required this.itemBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class BaseDestinoGrid extends StatelessWidget {
             value: loadedDestinations[i],
             child: itemBuilder(ctx, loadedDestinations[i]),
           ),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 1,
             childAspectRatio: 2 / 1,
             crossAxisSpacing: 10,

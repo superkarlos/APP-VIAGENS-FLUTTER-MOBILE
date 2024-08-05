@@ -6,13 +6,11 @@ import '../../service/avaliacao_service.dart';
 import '../../service/destino_service.dart';
 import '../../service/usuario_service.dart';
 import 'package:provider/provider.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class AvaliacaoPage extends StatefulWidget {
   final Usuario usuario;
 
-  AvaliacaoPage({required this.usuario});
+  const AvaliacaoPage({super.key, required this.usuario});
 
   @override
   _AvaliacaoPageState createState() => _AvaliacaoPageState();
@@ -21,24 +19,13 @@ class AvaliacaoPage extends StatefulWidget {
 class _AvaliacaoPageState extends State<AvaliacaoPage> {
   final TextEditingController _comentarioController = TextEditingController();
   Destino? _destinoSelecionado;
-  List<File> _imagens = [];
-  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     Provider.of<UsuarioService>(context, listen: false).fetchUsers();
     Provider.of<DestinoService>(context, listen: false).fetchDestinos();
-  }
-
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await _picker.pickImage(source: source);
-
-    if (pickedFile != null) {
-      setState(() {
-        _imagens.add(File(pickedFile.path));
-      });
-    }
+    Provider.of<AvaliacaoService>(context, listen: false).fetchAvaliacoes();
   }
 
   @override
@@ -63,7 +50,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                 Text('Usuário: ${avaliacao.usuario_nome}'),
                 Text('Comentário: ${avaliacao.avaliacao}'),
                 if (avaliacao.foto_urls != null)
-                  ...avaliacao.foto_urls!.map((url) => Image.network(url)).toList(),
+                  ...avaliacao.foto_urls!.map((url) => Image.network(url)),
               ],
             ),
           );
@@ -73,7 +60,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
         onPressed: () {
           _mostrarFormularioAvaliacao(context, destinosDisponiveis);
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -83,7 +70,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Deixe sua avaliação'),
+          title: const Text('Deixe sua avaliação'),
           content: SingleChildScrollView(
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -92,7 +79,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 DropdownButton<Destino>(
-                  hint: Text('Selecione o destino'),
+                  hint: const Text('Selecione o destino'),
                   value: _destinoSelecionado,
                   onChanged: (Destino? novoDestino) {
                     setState(() {
@@ -108,56 +95,8 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                 ),
                 TextField(
                   controller: _comentarioController,
-                  decoration: InputDecoration(labelText: 'Seu comentário'),
+                  decoration: const InputDecoration(labelText: 'Seu comentário'),
                 ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.camera_alt),
-                      onPressed: () {
-                        _pickImage(ImageSource.camera);
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.photo_library),
-                      onPressed: () {
-                        _pickImage(ImageSource.gallery);
-                      },
-                    ),
-                  ],
-                ),
-                if (_imagens.isNotEmpty)
-                  Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: _imagens.map((imagem) {
-                      return Stack(
-                        children: [
-                          Image.file(
-                            imagem,
-                            width: 100,
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                          Positioned(
-                            right: 0,
-                            child: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _imagens.remove(imagem);
-                                });
-                              },
-                              child: Icon(
-                                Icons.remove_circle,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }).toList(),
-                  ),
               ],
             ),
           ),
@@ -166,44 +105,44 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancelar'),
+              child: const Text('Cancelar'),
             ),
             TextButton(
               onPressed: () async {
                 if (_destinoSelecionado != null && _comentarioController.text.isNotEmpty) {
                   Avaliacao novaAvaliacao = Avaliacao(
                     id: 0, // Será substituído pelo ID gerado no servidor
+                    usuarioId: widget.usuario.id,
                     usuario_nome: widget.usuario.nome,
-                    destino_id: _destinoSelecionado!.id!,
+                    destino_id: _destinoSelecionado!.id,
                     avaliacao: _comentarioController.text,
                   );
 
                   try {
-                    //await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(novaAvaliacao, _imagens);
+                    await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(novaAvaliacao);
 
                     setState(() {
                       _destinoSelecionado = null;
                       _comentarioController.clear();
-                      _imagens.clear();
                     });
 
                     Navigator.of(context).pop();
                   } catch (error) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('Falha ao salvar a avaliação. Tente novamente.'),
                       ),
                     );
                   }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Por favor, preencha todos os campos.'),
                     ),
                   );
                 }
               },
-              child: Text('Salvar'),
+              child: const Text('Salvar'),
             ),
           ],
         );

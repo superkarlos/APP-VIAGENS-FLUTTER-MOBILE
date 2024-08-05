@@ -7,7 +7,7 @@ import 'package:My_App/components/grid/base_destiny_grid.dart';
 class DestinoGrid extends StatelessWidget {
   final Usuario usuario;
 
-  const DestinoGrid({Key? key, required this.usuario}) : super(key: key);
+  const DestinoGrid({super.key, required this.usuario});
 
   @override
   Widget build(BuildContext context) {

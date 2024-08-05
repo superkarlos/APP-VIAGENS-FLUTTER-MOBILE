@@ -6,7 +6,6 @@ import 'package:My_App/components/grid/destiny_grid.dart';
 import 'package:My_App/components/drawer.dart';
 
 import 'package:My_App/service/destino_service.dart';
-import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
 
 class TelaPrincipal extends StatelessWidget {
@@ -16,14 +15,12 @@ class TelaPrincipal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("logado com o id $userId");
     final providerDestino = Provider.of<DestinoService>(context);
     final providerUsuario = Provider.of<UsuarioService>(context);
 
     providerUsuario.fetchUsers();
     providerDestino.fetchDestinos();
 
-    final List<Destino> destinations = providerDestino.items;
     Usuario usuario = providerUsuario.findUserById(userId);
 
     return Scaffold(
