@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:My_App/model/usuario.dart';
 
 class UsuarioService with ChangeNotifier {
-  final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
+  final baseUrl = 'https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com/';
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Usuario> _usuarios = [];

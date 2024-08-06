@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 class TelaEditarUsuario extends StatefulWidget {
   final Usuario usuario;
 
-  const TelaEditarUsuario({Key? key, required this.usuario}) : super(key: key);
+  const TelaEditarUsuario({super.key, required this.usuario});
 
   @override
   _TelaEditarUsuarioState createState() => _TelaEditarUsuarioState();
@@ -20,7 +20,6 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
   final _nomeController = TextEditingController();
   final _usuarioController = TextEditingController();
   final _senhaController = TextEditingController();
-  String? _imagemPerfil;
 
   @override
   void initState() {
@@ -28,7 +27,6 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
     _nomeController.text = widget.usuario.nome;
     _usuarioController.text = widget.usuario.usuario;
     _senhaController.text = widget.usuario.senha;
-    _imagemPerfil = widget.usuario.imagemPerfil;
 
     Provider.of<UsuarioService>(context, listen: false)
         .loadLastImage(widget.usuario.id);
@@ -40,7 +38,7 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar Perfil'),
+        title: const Text('Editar Perfil'),
         actions: [
           usuarioService.uploading
               ? const Padding(

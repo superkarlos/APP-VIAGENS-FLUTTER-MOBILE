@@ -43,9 +43,9 @@ class DefaultFirebaseOptions {
   static const FirebaseOptions web = FirebaseOptions(
       apiKey: "AIzaSyBNaouq1Rzc2uFEA126246wSBMDJfjtLbM",
       authDomain: "mini-projeto4.firebaseapp.com",
-      databaseURL: "https://projeto-unid2-ddm-default-rtdb.firebaseio.com/",
-      projectId: "projeto-unid2-ddm",
-      storageBucket: "projeto-unid2-ddm.appspot.com",
+      databaseURL: "https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com/",
+      projectId: "projeto-unidade3-disp-moveis",
+      storageBucket: "projeto-unidade3-disp-moveis.appspot.com",
       messagingSenderId: "353808495533",
       appId: "1:353808495533:android:2b1288a5489b202205a724");
 
@@ -54,8 +54,9 @@ class DefaultFirebaseOptions {
         'AIzaSyBNaouq1Rzc2uFEA126246wSBMDJfjtLbM', // Substitua com seu valor real
     appId: '1:353808495533:android:2b1288a5489b202205a724',
     messagingSenderId: '353808495533',
-    projectId: 'projeto-unid2-ddm',
-    storageBucket: 'projeto-unid2-ddm.appspot.com',
+    projectId: 'projeto-unidade3-disp-moveis',
+    storageBucket: 'projeto-unidade3-disp-moveis.appspot.com',
+    databaseURL: "https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com/",
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,9 +64,10 @@ class DefaultFirebaseOptions {
         'AIzaSyBNaouq1Rzc2uFEA126246wSBMDJfjtLbM', // Substitua com seu valor real
     appId: '1:353808495533:android:2b1288a5489b202205a724',
     messagingSenderId: '353808495533',
-    projectId: 'projeto-unid2-ddm',
-    storageBucket: 'projeto-unid2-ddm.appspot.com',
+    projectId: 'projeto-unidade3-disp-moveis',
+    storageBucket: 'projeto-unidade3-disp-moveis.appspot.com',
     iosBundleId: 'com.test.projetounid2',
+    databaseURL: "https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com/",
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -75,6 +77,7 @@ class DefaultFirebaseOptions {
     projectId: 'projeto-de-teste-64e09',
     storageBucket: 'projeto-de-teste-64e09.appspot.com',
     iosBundleId: 'com.example.miniprojeto4',
+    databaseURL: "https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com/",
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "406033733824",
+    "firebase_url": "https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com",
+    "project_id": "projeto-unidade3-disp-moveis",
+    "storage_bucket": "projeto-unidade3-disp-moveis.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:406033733824:android:20ac9090713b6bb6303525",
+        "android_client_info": {
+          "package_name": "com.example.ola_mundo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6avmz2pC1B59nrRDuUqjkrqdcf6nKlcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

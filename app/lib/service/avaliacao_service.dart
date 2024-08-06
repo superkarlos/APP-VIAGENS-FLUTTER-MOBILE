@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AvaliacaoService with ChangeNotifier {
-  final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
+  final baseUrl = 'https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com/';
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Avaliacao> _avaliacoes = [];

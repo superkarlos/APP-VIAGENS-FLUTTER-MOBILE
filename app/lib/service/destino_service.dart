@@ -2,12 +2,11 @@ import 'dart:convert';
 
 import 'package:My_App/model/avaliacao.dart';
 import 'package:My_App/model/destino.dart';
-import 'package:My_App/model/usuario.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class DestinoService with ChangeNotifier {
-  final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
+  final baseUrl = 'https://projeto-unidade3-disp-moveis-default-rtdb.firebaseio.com/';
 
   List<Destino> destinos = [];
   ValueNotifier<int> updateNotifier = ValueNotifier(0);
