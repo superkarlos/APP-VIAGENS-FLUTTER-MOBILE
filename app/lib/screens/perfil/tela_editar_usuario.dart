@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:My_App/screens/tela_principal.dart';
 import 'package:My_App/service/usuario_service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:My_App/model/usuario.dart';
@@ -46,8 +43,8 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
         title: Text('Editar Perfil'),
         actions: [
           usuarioService.uploading
-              ? Padding(
-                  padding: const EdgeInsets.all(12.0),
+              ? const Padding(
+                  padding: EdgeInsets.all(12.0),
                   child: Center(
                     child: SizedBox(
                       width: 20,
@@ -62,12 +59,12 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
               : Row(
                   children: [
                     IconButton(
-                      icon: Icon(Icons.camera_alt),
+                      icon: const Icon(Icons.camera_alt),
                       onPressed: () => usuarioService.pickAndUploadImage(
                           ImageSource.camera, widget.usuario.id),
                     ),
                     IconButton(
-                      icon: Icon(Icons.photo),
+                      icon: const Icon(Icons.photo),
                       onPressed: () => usuarioService.pickAndUploadImage(
                           ImageSource.gallery, widget.usuario.id),
                     ),
@@ -89,18 +86,18 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
                       child: CircleAvatar(
                         radius: 75,
                         backgroundImage: usuarioService.lastUploadedImageUrl == null
-                            ? AssetImage('assets/images/pngwing.com.png') as ImageProvider
+                            ? const AssetImage('assets/images/pngwing.com.png') as ImageProvider
                             : NetworkImage(usuarioService.lastUploadedImageUrl!),
                       ),
                     ),
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
                     IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: usuarioService.deleteImage,
                     ),
                     TextFormField(
                       controller: _nomeController,
-                      decoration: InputDecoration(labelText: 'Nome'),
+                      decoration: const InputDecoration(labelText: 'Nome'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Por favor, insira o nome';
@@ -110,7 +107,7 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
                     ),
                     TextFormField(
                       controller: _usuarioController,
-                      decoration: InputDecoration(labelText: 'Usuário'),
+                      decoration: const InputDecoration(labelText: 'Usuário'),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Por favor, insira o nome de usuário';
@@ -120,7 +117,7 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
                     ),
                     TextFormField(
                       controller: _senhaController,
-                      decoration: InputDecoration(labelText: 'Senha'),
+                      decoration: const InputDecoration(labelText: 'Senha'),
                       obscureText: true,
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -130,7 +127,7 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
                       },
                     ),
                     Padding(
-                      padding: EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
@@ -159,7 +156,7 @@ class _TelaEditarUsuarioState extends State<TelaEditarUsuario> {
                             );
                           }
                         },
-                        child: Text('Salvar Alterações'),
+                        child: const Text('Salvar Alterações'),
                       ),
                     ),
                   ],

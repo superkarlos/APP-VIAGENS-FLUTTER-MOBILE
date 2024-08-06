@@ -1,8 +1,6 @@
 import 'package:My_App/screens/avaliacao/tela_adicionar_avaliacao.dart';
 import 'package:flutter/material.dart';
-import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
-import 'package:My_App/model/avaliacao.dart';
 import '../../service/avaliacao_service.dart';
 import '../../service/destino_service.dart';
 import '../../service/usuario_service.dart';
@@ -18,8 +16,6 @@ class AvaliacaoPage extends StatefulWidget {
 }
 
 class _AvaliacaoPageState extends State<AvaliacaoPage> {
-  final TextEditingController _comentarioController = TextEditingController();
-  Destino? _destinoSelecionado;
 
   @override
   void initState() {
@@ -65,8 +61,27 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Comentário: ${avaliacao.avaliacao}'),
-                          if (avaliacao.foto_urls != null)
-                            ...avaliacao.foto_urls!.map((url) => Image.network(url)),
+                          if (avaliacao.foto_urls != null && avaliacao.foto_urls!.isNotEmpty)
+                            Container(
+                              height: 200, // Ajuste a altura total do grid
+                              child: GridView.builder(
+                                shrinkWrap: true,
+                                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 5,
+                                  mainAxisSpacing: 5,
+                                ),
+                                itemCount: avaliacao.foto_urls!.length,
+                                itemBuilder: (context, index) {
+                                  return Image.network(
+                                    avaliacao.foto_urls![index],
+                                    fit: BoxFit.cover,
+                                    height: 100, // Ajuste a altura das imagens
+                                    width: 100,  // Ajuste a largura das imagens
+                                  );
+                                },
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -87,91 +102,6 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
         },
         child: const Icon(Icons.add),
       ),
-    );
-  }
-
-  void _mostrarFormularioAvaliacao(BuildContext context, List<Destino> destinosDisponiveis) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Deixe sua avaliação'),
-          content: SingleChildScrollView(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                DropdownButton<Destino>(
-                  hint: const Text('Selecione o destino'),
-                  value: _destinoSelecionado,
-                  onChanged: (Destino? novoDestino) {
-                    setState(() {
-                      _destinoSelecionado = novoDestino;
-                    });
-                  },
-                  items: destinosDisponiveis.map((destino) {
-                    return DropdownMenuItem<Destino>(
-                      value: destino,
-                      child: Text(destino.nome),
-                    );
-                  }).toList(),
-                ),
-                TextField(
-                  controller: _comentarioController,
-                  decoration: const InputDecoration(labelText: 'Seu comentário'),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancelar'),
-            ),
-            TextButton(
-              onPressed: () async {
-                if (_destinoSelecionado != null && _comentarioController.text.isNotEmpty) {
-                  Avaliacao novaAvaliacao = Avaliacao(
-                    id: 0, // Será substituído pelo ID gerado no servidor
-                    usuarioId: widget.usuario.id,
-                    usuario_nome: widget.usuario.nome,
-                    destino_id: _destinoSelecionado!.id,
-                    avaliacao: _comentarioController.text,
-                  );
-
-                  try {
-                    await Provider.of<AvaliacaoService>(context, listen: false).addAvaliacao(context, novaAvaliacao);
-
-                    setState(() {
-                      _destinoSelecionado = null;
-                      _comentarioController.clear();
-                    });
-
-                    Navigator.of(context).pop();
-                  } catch (error) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Falha ao salvar a avaliação. Tente novamente.'),
-                      ),
-                    );
-                  }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Por favor, preencha todos os campos.'),
-                    ),
-                  );
-                }
-              },
-              child: const Text('Salvar'),
-            ),
-          ],
-        );
-      },
     );
   }
 }

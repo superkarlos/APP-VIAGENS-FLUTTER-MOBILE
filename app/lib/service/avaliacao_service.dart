@@ -1,14 +1,24 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:My_App/service/destino_service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:My_App/model/avaliacao.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class AvaliacaoService with ChangeNotifier {
   final baseUrl = 'https://projeto-unid2-ddm-default-rtdb.firebaseio.com/';
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<Avaliacao> _avaliacoes = [];
+
+  bool uploading = false;
+  bool loadingImage = false;
+  double total = 0;
+  List<Reference> refs = [];
+  List<String> arquivos = [];
 
   List<Avaliacao> get avaliacoes {
     fetchAvaliacoes();
@@ -123,4 +133,55 @@ class AvaliacaoService with ChangeNotifier {
       throw error;
     }
   }
+
+  Future<void> loadImages() async {
+    loadingImage = true;
+    notifyListeners();
+    try {
+      fetchAvaliacoes();
+      final int lastId = _avaliacoes.isNotEmpty ? _avaliacoes.last.id : 0;
+      final newId = lastId + 1;
+      refs = (await _storage.ref('rating-images/$newId').listAll()).items;
+      for(var ref in refs) {
+        arquivos.add(await ref.getDownloadURL());
+      }
+    } finally {
+      loadingImage = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> pickAndUploadImage(ImageSource source) async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? file = await _picker.pickImage(source: source);
+    if (file != null) {
+      File imageFile = File(file.path);
+      fetchAvaliacoes();
+      final int lastId = _avaliacoes.isNotEmpty ? _avaliacoes.last.id : 0;
+      final newId = lastId + 1;
+      String ref = 'rating-images/$newId/img-${DateTime.now().toString()}.jpg';
+      UploadTask task = _storage.ref(ref).putFile(imageFile);
+
+      task.snapshotEvents.listen((TaskSnapshot snapshot) async {
+        if (snapshot.state == TaskState.running) {
+          uploading = true;
+          total = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          notifyListeners();
+        } else if (snapshot.state == TaskState.success) {
+          arquivos.add(await snapshot.ref.getDownloadURL());
+          refs.add(snapshot.ref);
+          uploading = false;
+          notifyListeners();
+        }
+      });
+    }
+  }
+
+  Future<void> deleteImage(int index) async {
+    await _storage.ref(refs[index].fullPath).delete();
+    arquivos.removeAt(index);
+    refs.removeAt(index);
+    notifyListeners();
+  }
+
 }
