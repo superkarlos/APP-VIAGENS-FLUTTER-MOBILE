@@ -114,17 +114,6 @@ class UsuarioDrawer extends StatelessWidget {
             },
           ),
           _criarDrawerItem(
-            icon: Icons.image,
-            text: 'Upload de fotos',
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => UploadPhotoScreen(),
-                ),
-              );
-            },
-          ),
-          _criarDrawerItem(
             icon: Icons.settings,
             text: 'Configurações',
             onTap: () {},

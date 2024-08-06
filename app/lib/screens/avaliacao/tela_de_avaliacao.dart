@@ -61,6 +61,7 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('Comentário: ${avaliacao.avaliacao}'),
+                          SizedBox(height: 20,),
                           if (avaliacao.foto_urls != null && avaliacao.foto_urls!.isNotEmpty)
                             Container(
                               height: 200, // Ajuste a altura total do grid

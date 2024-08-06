@@ -1,6 +1,3 @@
-import 'package:My_App/screens/avaliacao/tela_de_avaliacao.dart';
-import 'package:My_App/components/view/destiny_detail_view.dart';
-import 'package:My_App/screens/tela_principal.dart';
 import 'package:My_App/screens/tela_de_cadastro.dart';
 import 'package:My_App/screens/tela_de_login.dart';
 import 'package:My_App/service/avaliacao_service.dart';
