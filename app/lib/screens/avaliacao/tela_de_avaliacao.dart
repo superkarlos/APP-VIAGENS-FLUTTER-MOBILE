@@ -30,28 +30,50 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final avaliacoes = Provider.of<AvaliacaoService>(context).avaliacoes;
     final destinosDisponiveis = Provider.of<DestinoService>(context).items;
+    // Ordenar os destinos em ordem alfabética pelo nome
+    destinosDisponiveis.sort((a, b) => a.nome.compareTo(b.nome));
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Avaliações'),
       ),
       body: ListView.builder(
-        itemCount: avaliacoes.length,
+        itemCount: destinosDisponiveis.length,
         itemBuilder: (context, index) {
-          final avaliacao = avaliacoes[index];
-          final destino = destinosDisponiveis.firstWhere((destino) => destino.id == avaliacao.destino_id);
-          return ListTile(
-            title: Text('Local: ${destino.nome}'),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Usuário: ${avaliacao.usuario_nome}'),
-                Text('Comentário: ${avaliacao.avaliacao}'),
-                if (avaliacao.foto_urls != null)
-                  ...avaliacao.foto_urls!.map((url) => Image.network(url)),
-              ],
+          final destino = destinosDisponiveis[index];
+          final avaliacoes = destino.avaliacoes;
+
+          return Card(
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: ExpansionTile(
+              leading: Icon(Icons.location_on, color: Theme.of(context).primaryColor),
+              title: Text(
+                destino.nome,
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).primaryColor,
+                ),
+              ),
+              children: avaliacoes.map((avaliacao) {
+                return Column(
+                  children: [
+                    ListTile(
+                      title: Text('Usuário: ${avaliacao.usuario_nome}'),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Comentário: ${avaliacao.avaliacao}'),
+                          if (avaliacao.foto_urls != null)
+                            ...avaliacao.foto_urls!.map((url) => Image.network(url)),
+                        ],
+                      ),
+                    ),
+                    const Divider(),
+                  ],
+                );
+              }).toList(),
             ),
           );
         },
