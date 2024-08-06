@@ -1,3 +1,4 @@
+import 'package:My_App/screens/avaliacao/tela_adicionar_avaliacao.dart';
 import 'package:flutter/material.dart';
 import 'package:My_App/model/destino.dart';
 import 'package:My_App/model/usuario.dart';
@@ -31,7 +32,6 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
   @override
   Widget build(BuildContext context) {
     final destinosDisponiveis = Provider.of<DestinoService>(context).items;
-    // Ordenar os destinos em ordem alfabética pelo nome
     destinosDisponiveis.sort((a, b) => a.nome.compareTo(b.nome));
 
     return Scaffold(
@@ -80,7 +80,10 @@ class _AvaliacaoPageState extends State<AvaliacaoPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _mostrarFormularioAvaliacao(context, destinosDisponiveis);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => FormularioAvaliacaoPage(usuario: widget.usuario, destinosDisponiveis: destinosDisponiveis))
+          );
         },
         child: const Icon(Icons.add),
       ),
